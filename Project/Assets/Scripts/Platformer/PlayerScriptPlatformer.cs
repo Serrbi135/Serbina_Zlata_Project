@@ -1,0 +1,293 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
+public class PlayerScriptPlatformer : MonoBehaviour
+{
+    private Rigidbody2D rb;
+    private Animator anim;
+
+    public GameObject pauseMenu;
+    public GameObject deathMenu;
+
+    [SerializeField] private Image[] Hearts;
+
+    [SerializeField] private Sprite Heart_Full;
+    [SerializeField] private Sprite Heart_Null;
+
+    private bool isGround;
+    private bool isLeft = true;
+
+    private bool isPause = false;
+    private bool isHurt = true;
+
+    [SerializeField] private Sprite soundOn;
+    [SerializeField] private Sprite soundOff;
+
+    [SerializeField] private float rayDistance = 0.5f;
+    private bool doubleJump = false;
+
+    [Header("Sounds")]
+    [SerializeField] private AudioClip hit;
+    [SerializeField] private AudioClip collect;
+    [SerializeField] private AudioClip death;
+    [SerializeField] private AudioClip ui_click;
+    private AudioSource audioSource;
+
+    [Header("Характеристики")]
+    public int HP = 3;
+    public float Speed = 1f;
+    public float jumpForce = 4f;
+
+    [Header("Shooting")]
+    public GameObject bulletPrefab; 
+    public Transform firePoint; 
+    public float bulletSpeed = 10f;
+    Vector3 shootDir;
+
+    void Start()
+    {
+        audioSource = GameObject.Find("Main Camera").GetComponent<AudioSource>();
+
+        Time.timeScale = 1;
+        isPause = false;
+        rb = gameObject.GetComponent<Rigidbody2D>();
+        anim = gameObject.GetComponent<Animator>();
+        deathMenu.SetActive(false);
+    }
+
+
+    public void OnExit()
+    {
+        SceneManager.LoadScene(0);
+    }
+
+    public void OnClickMainMenu()
+    {
+        audioSource.PlayOneShot(ui_click);
+        SceneManager.LoadScene(0);
+    }
+
+    public void OnContinueClick()
+    {
+        audioSource.PlayOneShot(ui_click);
+        isPause = false;
+        Time.timeScale = 1;
+        pauseMenu.SetActive(false);
+    }
+
+    public void OnClickReplay()
+    {
+        audioSource.PlayOneShot(ui_click);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    /*public void OnClickSound()
+    {
+        audioSource.PlayOneShot(ui_click);
+        if (audioSource.volume == 1)
+        {
+            GameObject.Find("Sound_Button").GetComponent<Image>().sprite = soundOff;
+            audioSource.volume = 0;
+        }
+        else if(audioSource.volume == 0)
+        {
+            GameObject.Find("Sound_Button").GetComponent<Image>().sprite = soundOn;
+            audioSource.volume = 1;
+        }
+    }*/
+
+    // Update is called once per frame
+    void Update()
+    {
+        //RaycastHit2D hit = Physics2D.Raycast(rb.position, Vector2.down, rayDistance, LayerMask.GetMask("Ground"));
+        isGround = Physics2D.OverlapCircle(rb.position, rayDistance, LayerMask.GetMask("Ground"));
+        if(isGround )
+        {
+            anim.SetBool("Jump", false);
+            doubleJump = false;
+        }
+        /*if (hit.collider != null)
+        {
+            isGround = true;
+            doubleJump = false;
+        }
+        else
+        {
+            isGround = false;
+        }*/
+
+        
+
+        if (HP == 3)
+        {
+            Hearts[0].sprite = Heart_Full;
+            Hearts[1].sprite = Heart_Full;
+            Hearts[2].sprite = Heart_Full;
+        }
+        else if(HP == 2)
+        {
+            Hearts[0].sprite = Heart_Full;
+            Hearts[1].sprite = Heart_Full;
+            Hearts[2].sprite = Heart_Null;
+            //Hearts[2].GetComponent<Animator>().Play("heart_anim");
+        }
+        else if(HP == 1)
+        {
+            Hearts[0].sprite = Heart_Full;
+            Hearts[1].sprite = Heart_Null;
+            Hearts[2].sprite = Heart_Null;
+            //Hearts[1].GetComponent<Animator>().Play("heart_anim");
+        }
+        else if(HP <= 0)
+        {
+            //audioSource.PlayOneShot(death);
+            isHurt = false;
+            Hearts[0].sprite = Heart_Null;
+            Hearts[1].sprite = Heart_Null;
+            Hearts[2].sprite = Heart_Null;
+            //Hearts[0].GetComponent<Animator>().Play("heart_anim");
+            //anim.Play("Mushroom_Death");
+            StartCoroutine(waitDeath());
+        }
+        if(isPause == false && HP > 0)
+        {
+            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space))
+            {
+                if (isGround)
+                {
+                    rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+                    anim.SetBool("Jump", true);
+                    /*jumpAnim.SetActive(true);
+                    jumpAnim.transform.position = new Vector3(transform.position.x, transform.position.y, -2f);
+                    jumpAnim.GetComponent<Animator>().SetTrigger("jump");*/
+                }
+                else if (!doubleJump && rb.velocity.y < 0)
+                {
+                    doubleJump = true;
+                    rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+                    /*jumpAnim.SetActive(true);
+                    jumpAnim.transform.position = new Vector3(transform.position.x, transform.position.y, -2f);
+                    jumpAnim.GetComponent<Animator>().SetTrigger("jump");*/
+                }
+            }
+
+            if (Input.GetKey(KeyCode.A))
+            {
+                //var rot = GameObject.Find("mushroom_rot");
+                //rot.transform.localPosition = new Vector3(-0.1f, rot.transform.localPosition.y, rot.transform.localPosition.z);
+                anim.SetBool("Run", true);
+                gameObject.GetComponent<SpriteRenderer>().flipX = true;
+                shootDir = Vector3.left;
+                rb.AddForce(Vector3.left * Speed);
+                isLeft = true;
+            }
+            if (Input.GetKey(KeyCode.D))
+            {
+                //var rot = GameObject.Find("mushroom_rot");
+                //rot.transform.localPosition = new Vector3(0.1f, rot.transform.localPosition.y, rot.transform.localPosition.z);
+                anim.SetBool("Run", true);
+                gameObject.GetComponent<SpriteRenderer>().flipX = false;
+                shootDir = Vector3.right;
+                rb.AddForce(Vector3.right * Speed);
+                isLeft = false;
+            }
+            if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.W))
+            {
+                anim.SetBool("Run", false);
+            }
+            if (Input.GetButtonDown("Fire1"))
+            {
+                Shoot();
+            }
+        }
+    }
+
+    void Shoot()
+    {
+        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        Bullet bulletScript = bullet.GetComponent<Bullet>();
+
+        //Vector2 shootDirection = firePoint.right; 
+        bulletScript.SetDirection(shootDir);
+    }
+
+    
+
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.tag == "Spikes")
+        {
+            audioSource.PlayOneShot(hit);
+            isHurt = true;
+            HP -= 1;
+            StartCoroutine(waitSpikes());
+        }
+        else if(collision.tag == "Enemy")
+        {
+            //audioSource.PlayOneShot(hit);
+            HP -= 1;
+        }
+    }
+
+
+    public void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag == "Spikes")
+        {
+            isHurt = false;
+            StopCoroutine(waitSpikes());
+        }
+    }
+
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.name == "ExitCollider")
+        {
+            OnExit();
+        }
+        else if(collision.gameObject.name == "SecretRoom")
+        {
+            collision.gameObject.GetComponent<BoxCollider2D>().enabled = false;
+            collision.gameObject.SetActive(false);
+            GameObject.Find("Star_3_Light").GetComponent<Light>().enabled = true;
+        }
+        else if(collision.gameObject.name == "DoorCollider")
+        {
+            OnExit();
+        }
+    }
+
+    public void TakeDamage(int dmg)
+    {
+        HP -= dmg;
+    }
+
+    public IEnumerator waitSpikes()
+    {
+        yield return new WaitForSeconds(1f);
+        if(isHurt == true)
+        {
+            audioSource.PlayOneShot(hit);
+            HP -= 1;
+            //anim.Play("Mushroom_Hurt");
+            StartCoroutine(waitSpikes());
+        }
+    }
+
+    public IEnumerator waitDeath()
+    {
+        yield return new WaitForSeconds(1f);
+        deathMenu.SetActive(true);
+    }
+
+    //OverlapCircle(rb.position, rayDistance, LayerMask.GetMask("Ground"));
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, rayDistance);
+
+    }
+}
