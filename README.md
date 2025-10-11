@@ -16,4 +16,6 @@ final_scripts - пользовательские сценарии
 
 final_application - окончательная заявка
 
+first_code - Первый показ кода
+
 
