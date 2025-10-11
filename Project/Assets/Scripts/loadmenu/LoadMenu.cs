@@ -39,10 +39,14 @@ public class LoadMenu : MonoBehaviour
         loadGameButton.onClick.AddListener(LoadGame);
         toDiaryButton.onClick.AddListener(OpenDiary);
 
+        Time.timeScale = 1f;
+
         logoButton.onClick.AddListener(Logo);
 
         CheckForSave();
     }
+
+
 
     public void CheckForSave()
     {

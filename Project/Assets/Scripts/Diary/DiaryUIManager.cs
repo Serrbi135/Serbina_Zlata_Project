@@ -25,7 +25,6 @@ public class DiaryUIManager : MonoBehaviour
 
     public void LoadDiaryEntries()
     {
-        // Очищаем существующие кнопки
         foreach (Transform child in contentPanel)
         {
             Destroy(child.gameObject);
@@ -33,7 +32,6 @@ public class DiaryUIManager : MonoBehaviour
 
         for(int i = 0; i < entries.Count; i++)
         {
-            //entries[i].isUnlocked = (DiaryManager.Instance.flags[i] != 0) ? true : false;
             if(DiaryManager.Instance.flags[i] != 0)
             {
                 entries[i].isUnlocked = true;
@@ -41,7 +39,6 @@ public class DiaryUIManager : MonoBehaviour
             
         }
 
-        // Создаем кнопки для каждой записи
         foreach (var entry in entries)
         {
             GameObject buttonObj = Instantiate(entryButtonPrefab, contentPanel);

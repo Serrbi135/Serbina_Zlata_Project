@@ -31,7 +31,6 @@ public class DiaryManager : MonoBehaviour
 
     public void UnlockEntry(int entryId)
     {
-        // Находим запись и разблокируем
         var entry = diaryUIManager.entries.Find(e => e.id == entryId);
         if (entry != null)
         {

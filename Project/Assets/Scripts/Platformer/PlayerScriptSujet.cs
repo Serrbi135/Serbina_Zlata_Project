@@ -97,22 +97,6 @@ public class PlayerScriptSujet : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    /*public void OnClickSound()
-    {
-        audioSource.PlayOneShot(ui_click);
-        if (audioSource.volume == 1)
-        {
-            GameObject.Find("Sound_Button").GetComponent<Image>().sprite = soundOff;
-            audioSource.volume = 0;
-        }
-        else if(audioSource.volume == 0)
-        {
-            GameObject.Find("Sound_Button").GetComponent<Image>().sprite = soundOn;
-            audioSource.volume = 1;
-        }
-    }*/
-
-    // Update is called once per frame
     void Update()
     {
         RaycastHit2D hit = Physics2D.Raycast(rb.position, Vector2.down, rayDistance, LayerMask.GetMask("Ground"));
@@ -127,21 +111,8 @@ public class PlayerScriptSujet : MonoBehaviour
             isGround = false;
         }
 
-        /*if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (!pauseMenu.activeInHierarchy)
-            {
-                isPause = true;
-            }
-            else
-            {
-                isPause = false;
-            }
-        }*/
-
         
-        //if(!isPause)
-        //{
+        
             if(canMove)
             {
                 if (Input.GetKeyDown(KeyCode.W))
@@ -149,24 +120,16 @@ public class PlayerScriptSujet : MonoBehaviour
                     if (isGround)
                     {
                         rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
-                        /*jumpAnim.SetActive(true);
-                        jumpAnim.transform.position = new Vector3(transform.position.x, transform.position.y, -2f);
-                        jumpAnim.GetComponent<Animator>().SetTrigger("jump");*/
                     }
                     else if (!doubleJump && rb.velocity.y < 0)
                     {
                         doubleJump = true;
                         rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
-                        /*jumpAnim.SetActive(true);
-                        jumpAnim.transform.position = new Vector3(transform.position.x, transform.position.y, -2f);
-                        jumpAnim.GetComponent<Animator>().SetTrigger("jump");*/
                     }
                 }
 
                 if (Input.GetKey(KeyCode.A))
                 {
-                    //var rot = GameObject.Find("mushroom_rot");
-                    //rot.transform.localPosition = new Vector3(-0.1f, rot.transform.localPosition.y, rot.transform.localPosition.z);
                     anim.SetBool("Run", true);
                     gameObject.GetComponent<SpriteRenderer>().flipX = false;
                     rb.AddForce(Vector3.left * Speed);
@@ -174,8 +137,7 @@ public class PlayerScriptSujet : MonoBehaviour
                 }
                 if (Input.GetKey(KeyCode.D))
                 {
-                    //var rot = GameObject.Find("mushroom_rot");
-                    //rot.transform.localPosition = new Vector3(0.1f, rot.transform.localPosition.y, rot.transform.localPosition.z);
+                 
                     anim.SetBool("Run", true);
                     gameObject.GetComponent<SpriteRenderer>().flipX = true;
                     rb.AddForce(Vector3.right * Speed);
@@ -188,7 +150,6 @@ public class PlayerScriptSujet : MonoBehaviour
             }
             
         }
-    //}
 
     void OnDrawGizmosSelected()
     {
@@ -204,12 +165,6 @@ public class PlayerScriptSujet : MonoBehaviour
         if(collision.gameObject.name == "ExitCollider")
         {
             OnExit();
-        }
-        else if(collision.gameObject.name == "SecretRoom")
-        {
-            collision.gameObject.GetComponent<BoxCollider2D>().enabled = false;
-            collision.gameObject.SetActive(false);
-            GameObject.Find("Star_3_Light").GetComponent<Light>().enabled = true;
         }
         else if(collision.gameObject.name == "DoorCollider")
         {

@@ -8,12 +8,13 @@ using TMPro;
 
 public class SaveLoadManager : MonoBehaviour
 {
-    [Header("UI Elements")]
-
     private GameObject currentPanel;
     public GameObject saveLoadPanelPrefab;
     public Button saveButton;
     public Button exitButton;
+
+    private float playTime = 0f;
+    private bool isCountingTime = false;
 
     private GameAPIManager apiManager;
     public  SaveLoadManager Instance;
@@ -60,6 +61,10 @@ public class SaveLoadManager : MonoBehaviour
         {
             ToggleMenu();
         }
+        if (isCountingTime)
+        {
+            playTime += Time.deltaTime;
+        }
     }
 
     private void Awake()
@@ -72,10 +77,44 @@ public class SaveLoadManager : MonoBehaviour
         else Destroy(gameObject);
     }
 
+    public void StartPlayTime()
+    {
+        isCountingTime = true;
+    }
+
+    public void PausePlayTime()
+    {
+        isCountingTime = false;
+    }
+
+    public void ResetPlayTime()
+    {
+        playTime = 0f;
+    }
+
+    public float GetPlayTime()
+    {
+        return playTime;
+    }
+
+    public void LoadPlayTime(float loadedTime)
+    {
+        playTime = loadedTime;
+    }
+
     private void ToggleMenu()
     {
         bool isActive = !currentPanel.activeSelf;
         currentPanel.SetActive(isActive);
+
+        if (isActive)
+        {
+            PausePlayTime();
+        }
+        else
+        {
+            StartPlayTime();
+        }
 
         Time.timeScale = isActive ? 0f : 1f;
     }
@@ -85,6 +124,7 @@ public class SaveLoadManager : MonoBehaviour
     private void ExitFrom()
     {
         currentPanel.SetActive(false);
+        StartPlayTime();
         SceneManager.LoadScene("LoadScene");
     }
 
@@ -115,7 +155,8 @@ public class SaveLoadManager : MonoBehaviour
         {
             sceneIndex = SceneManager.GetActiveScene().buildIndex,
             moralityPoints = MoralitySystem.Instance.Points,
-            diaryFlags = DiaryManager.Instance.GetFlags()
+            diaryFlags = DiaryManager.Instance.GetFlags(),
+            playTime = playTime 
         };
     }
 }

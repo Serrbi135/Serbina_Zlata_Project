@@ -7,6 +7,7 @@ public class PlayerProgress
     public int sceneIndex;
     public int moralityPoints;
     public int[] diaryFlags;
+    public float playTime;
 }
 
 public class GameProgress : MonoBehaviour

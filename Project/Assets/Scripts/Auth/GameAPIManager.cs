@@ -82,7 +82,7 @@ public class GameAPIManager : MonoBehaviour
             var response = JsonUtility.FromJson<LoginResponse>(request.downloadHandler.text);
             if (response.status == "success" && response.user_id > 0) 
             {
-                PlayerPrefs.SetInt("CurrentUserId", response.user_id); // Сохраняем ID
+                PlayerPrefs.SetInt("CurrentUserId", response.user_id); 
                 PlayerPrefs.Save();
                 onSuccess?.Invoke(response.user_id);
             }
@@ -164,7 +164,8 @@ public class GameAPIManager : MonoBehaviour
             user_id = userId,
             scene_index = progress.sceneIndex,
             morality = progress.moralityPoints,
-            diary_flags = progress.diaryFlags ?? new int[0]
+            diary_flags = progress.diaryFlags ?? new int[0],
+            play_time = progress.playTime
         };
 
         string json = JsonUtility.ToJson(saveData);
@@ -196,6 +197,7 @@ public class GameAPIManager : MonoBehaviour
         public int scene_index;
         public int morality;
         public int[] diary_flags;
+        public float play_time;
     }
 
     
@@ -224,7 +226,7 @@ public class GameAPIManager : MonoBehaviour
                 try
                 {
                     var response = JsonUtility.FromJson<LoadResponse>(request.downloadHandler.text);
-                    Debug.Log($"Полученные данные: Scene={response.scene_index}, Morality={response.morality}, Flags={string.Join(",", response.diary_flags)}");
+                    Debug.Log($"Полученные данные: Scene={response.scene_index}, Morality={response.morality}, Flags={string.Join(",", response.diary_flags)}, PlayTime={response.play_time}");
 
                     if (response.status == "success")
                     {
@@ -232,7 +234,8 @@ public class GameAPIManager : MonoBehaviour
                         {
                             sceneIndex = response.scene_index,
                             moralityPoints = response.morality,
-                            diaryFlags = response.diary_flags
+                            diaryFlags = response.diary_flags,
+                            playTime = response.play_time
                         });
                     }
                     else
@@ -268,6 +271,7 @@ public class GameAPIManager : MonoBehaviour
         public int scene_index;
         public int morality;
         public int[] diary_flags;
+        public float play_time;
     }
 
 
@@ -304,7 +308,6 @@ public class GameAPIManager : MonoBehaviour
 
     public IEnumerator CheckSaveExists(int userId, Action<bool> callback)
     {
-        // Используем тот же формат запроса, что и в LoadGame
         string jsonData = $"{{\"user_id\":{userId}}}";
 
         using (var request = new UnityWebRequest(baseUrl + "/load", "POST"))
@@ -318,13 +321,11 @@ public class GameAPIManager : MonoBehaviour
 
             if (request.result == UnityWebRequest.Result.Success)
             {
-                // Проверяем, есть ли данные в ответе
                 var response = JsonUtility.FromJson<LoadResponse>(request.downloadHandler.text);
                 callback?.Invoke(response.status == "success");
             }
             else
             {
-                // Если ошибка 404 - сохранения нет
                 if (request.responseCode == 404)
                 {
                     callback?.Invoke(false);
