@@ -12,10 +12,10 @@ CORS(app)
 
 bcrypt = Bcrypt(app)
 
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'Zlata1'
-app.config['MYSQL_PASSWORD'] = 'Bulochka136'
-app.config['MYSQL_DB'] = 'game_db_flask'
+app.config['MYSQL_HOST'] = ''
+app.config['MYSQL_USER'] = ''
+app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_DB'] = ''
 
 mysql = MySQL(app)
 
