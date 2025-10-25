@@ -4,33 +4,51 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
-using UnityEditor.SearchService;
 
 public class LoadLobby : MonoBehaviour
 {
+    [SerializeField] private Image progressCircle;
 
-    public TextMeshProUGUI txtBar;
-    public int sceneID;
-    public Image LoadBar;
-    AsyncOperation asyncOper;
-
-    void Start()
+    private void Start()
     {
-        StartCoroutine(LoadSceneCor());
+        StartCoroutine(LoadSceneAsync());
     }
 
-    public IEnumerator LoadSceneCor()
+    IEnumerator LoadSceneAsync()
     {
-        yield return new WaitForSeconds(1f);
-        asyncOper = SceneManager.LoadSceneAsync(sceneID);
-        while(!asyncOper.isDone)
-        {
-            float progress = asyncOper.progress / 0.9f;
-            LoadBar.fillAmount = progress;
-            txtBar.text = "Загрузка..." + string.Format("{0:0}%", progress * 100f);
-            yield return 0;
+        AsyncOperation asyncLoad;
 
+        if (!string.IsNullOrEmpty(Loader.nextSceneName))
+        {
+            asyncLoad = SceneManager.LoadSceneAsync(Loader.nextSceneName);
+        }
+        else if (Loader.nextSceneIndex != -1)
+        {
+            asyncLoad = SceneManager.LoadSceneAsync(Loader.nextSceneIndex);
+        }
+        else
+        {
+            Debug.LogError("No scene to load!");
+            yield break;
         }
 
+        asyncLoad.allowSceneActivation = false;
+
+        float progress = 0;
+        while (!asyncLoad.isDone)
+        {
+            progress = Mathf.MoveTowards(progress, asyncLoad.progress, Time.deltaTime);
+            progressCircle.fillAmount = progress;
+
+            if (progress >= 0.9f)
+            {
+                progressCircle.fillAmount = 1;
+                asyncLoad.allowSceneActivation = true;
+            }
+            yield return null;
+        }
+
+        Loader.nextSceneName = null;
+        Loader.nextSceneIndex = -1;
     }
 }

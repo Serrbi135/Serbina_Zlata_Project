@@ -13,7 +13,7 @@ public class SaveLoadManager : MonoBehaviour
     public Button saveButton;
     public Button exitButton;
 
-    private float playTime = 0f;
+    private float currentSessionTime = 0f; 
     private bool isCountingTime = false;
 
     private GameAPIManager apiManager;
@@ -28,7 +28,7 @@ public class SaveLoadManager : MonoBehaviour
 
         currentPanel.transform.SetParent(transform, false);
         Canvas canvas = currentPanel.GetComponent<Canvas>();
-        if (canvas != null)
+        /*if (canvas != null)
         {
             canvas.worldCamera = Camera.main; 
             canvas.sortingLayerName = "UI";
@@ -37,7 +37,7 @@ public class SaveLoadManager : MonoBehaviour
         else
         {
             Debug.LogError("Canvas component missing!");
-        }
+        }*/
 
         saveButton = currentPanel.transform.Find("saveButton").GetComponent<Button>();
         exitButton = currentPanel.transform.Find("exitButton").GetComponent<Button>();
@@ -52,18 +52,19 @@ public class SaveLoadManager : MonoBehaviour
         exitButton.onClick.AddListener(ExitFrom);
 
         currentPanel.SetActive(false);
+        StartPlayTime();
 
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && !(SceneManager.GetActiveScene().name == "LoadScene") && !(SceneManager.GetActiveScene().name == "Registration") && !(SceneManager.GetActiveScene().name == "Diary"))
+        if (Input.GetKeyDown(KeyCode.Escape) && !(SceneManager.GetActiveScene().name == "LoadScene") && !(SceneManager.GetActiveScene().name == "LoadLobby") && !(SceneManager.GetActiveScene().name == "Registration") && !(SceneManager.GetActiveScene().name == "Diary"))
         {
             ToggleMenu();
         }
         if (isCountingTime)
         {
-            playTime += Time.deltaTime;
+            currentSessionTime += Time.deltaTime;
         }
     }
 
@@ -87,21 +88,23 @@ public class SaveLoadManager : MonoBehaviour
         isCountingTime = false;
     }
 
-    public void ResetPlayTime()
+    public void ResetCurrentSessionTime()
     {
-        playTime = 0f;
+        currentSessionTime = 0f;
     }
 
-    public float GetPlayTime()
+
+    public float GetTotalPlayTime()
     {
-        return playTime;
+        float savedTime = apiManager.GetTotalPlayTime();
+        return savedTime + currentSessionTime;
     }
 
-    public void LoadPlayTime(float loadedTime)
+    public void LoadSavedPlayTime(float savedTime)
     {
-        playTime = loadedTime;
+        apiManager.SetTotalPlayTime(savedTime);
+        currentSessionTime = 0f; 
     }
-
     private void ToggleMenu()
     {
         bool isActive = !currentPanel.activeSelf;
@@ -120,13 +123,16 @@ public class SaveLoadManager : MonoBehaviour
     }
 
 
-
     private void ExitFrom()
     {
+        SaveGame();
+        Time.timeScale = 1f;
         currentPanel.SetActive(false);
         StartPlayTime();
-        SceneManager.LoadScene("LoadScene");
+        Loader.LoadScene("LoadScene");
     }
+
+
 
     public void SaveGame()
     {
@@ -139,6 +145,8 @@ public class SaveLoadManager : MonoBehaviour
                 if (success)
                 {
                     Debug.Log("Game saved successfully!");
+                    apiManager.SetTotalPlayTime(GetTotalPlayTime());
+                    currentSessionTime = 0f;
                 }
                 else
                 {
@@ -156,7 +164,7 @@ public class SaveLoadManager : MonoBehaviour
             sceneIndex = SceneManager.GetActiveScene().buildIndex,
             moralityPoints = MoralitySystem.Instance.Points,
             diaryFlags = DiaryManager.Instance.GetFlags(),
-            playTime = playTime 
+            playTime = GetTotalPlayTime()
         };
     }
 }

@@ -7,6 +7,7 @@ public class DialogueTrigger : MonoBehaviour
     public Dialogue dialogue;
     public float interactionDistance = 2f;
     public bool destroyAfterDialogue = false;
+    [SerializeField] private AudioClip soundToPlay;
 
     private bool isDialogueActive = false;
 
@@ -28,6 +29,7 @@ public class DialogueTrigger : MonoBehaviour
     {
         DialogueSystem.Instance.OnDialogueEnd += HandleDialogueEnd;
         isDialogueActive = true;
+        AudioManager.Instance.PlaySFX(soundToPlay);
 
         dialogue.destroyAfter = destroyAfterDialogue;
         DialogueSystem.Instance.StartDialogue(dialogue);

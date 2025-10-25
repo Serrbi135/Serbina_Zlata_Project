@@ -4,21 +4,21 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class LoadMenu : MonoBehaviour
 {
-
-
     [Header("UI Elements")]
     public Button newGameButton;
     public Button loadGameButton;
     public Button toDiaryButton;
-
+    public Button statOpenButton;
     public Button logoButton;
     public TextMeshProUGUI saveInfoText;
-
     public TextMeshProUGUI logoText;
+    [SerializeField] private CanvasGroup popup;
 
+    [Header("Other")]
     private GameAPIManager apiManager;
     private int currentUserId;
     private bool hasSave;
@@ -27,6 +27,10 @@ public class LoadMenu : MonoBehaviour
 
     [SerializeField] private MoralitySystem moralitySystem;
     [SerializeField] private DiaryManager diaryManager;
+
+    
+
+    
 
     private void Start()
     {
@@ -38,10 +42,13 @@ public class LoadMenu : MonoBehaviour
         newGameButton.onClick.AddListener(StartNewGame);
         loadGameButton.onClick.AddListener(LoadGame);
         toDiaryButton.onClick.AddListener(OpenDiary);
+        statOpenButton.onClick.AddListener(OpenStats);
 
         Time.timeScale = 1f;
 
         logoButton.onClick.AddListener(Logo);
+
+        popup.DOFade(1, 0.5f);
 
         CheckForSave();
     }
@@ -68,11 +75,18 @@ public class LoadMenu : MonoBehaviour
 
     private void OpenDiary()
     {
-        
         StartCoroutine(apiManager.LoadAndApplyDiaryFlags(PlayerPrefs.GetInt("CurrentUserId")));
-        SceneManager.LoadScene("Diary");
+        Loader.LoadScene("Diary");
 
     }
+
+    private void OpenStats()
+    {
+        Loader.LoadScene("Stats");
+
+    }
+
+    
 
     public void LoadGame()
     {
@@ -101,7 +115,7 @@ public class LoadMenu : MonoBehaviour
                 if (progress.sceneIndex >= 0 && progress.sceneIndex < SceneManager.sceneCountInBuildSettings)
                 {
                     Debug.Log($"«агрузка сцены с индексом {progress.sceneIndex}");
-                    SceneManager.LoadScene(progress.sceneIndex);
+                    Loader.LoadScene(progress.sceneIndex);
                 }
             }
         }));
@@ -146,7 +160,7 @@ public class LoadMenu : MonoBehaviour
 
     private void LoadFirstLevel()
     {
-        SceneManager.LoadScene(3); 
+        Loader.LoadScene("Sujet_1_A"); 
         //ѕќћ≈Ќя“№
     }
 

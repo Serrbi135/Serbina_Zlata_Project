@@ -13,6 +13,8 @@ public class GameAPIManager : MonoBehaviour
     private string baseUrl = "http://localhost:5000";
     private UIManager uiManager;
 
+    private float totalPlayTime = 0f;
+
     private void Start()
     {
         uiManager = FindObjectOfType<UIManager>();
@@ -65,6 +67,17 @@ public class GameAPIManager : MonoBehaviour
         public string message;
     }
 
+    public void SetTotalPlayTime(float time)
+    {
+        totalPlayTime = time;
+    }
+
+    // Метод для получения общего времени
+    public float GetTotalPlayTime()
+    {
+        return totalPlayTime;
+    }
+
     public IEnumerator Login(string username, string password, System.Action<int> onSuccess)
     {
         string jsonData = $"{{\"username\":\"{username}\",\"password\":\"{password}\"}}";
@@ -85,6 +98,7 @@ public class GameAPIManager : MonoBehaviour
                 PlayerPrefs.SetInt("CurrentUserId", response.user_id); 
                 PlayerPrefs.Save();
                 onSuccess?.Invoke(response.user_id);
+                yield return LoadTotalPlayTime(response.user_id);
             }
             else
             {
@@ -165,8 +179,9 @@ public class GameAPIManager : MonoBehaviour
             scene_index = progress.sceneIndex,
             morality = progress.moralityPoints,
             diary_flags = progress.diaryFlags ?? new int[0],
-            play_time = progress.playTime
+            play_time = totalPlayTime 
         };
+
 
         string json = JsonUtility.ToJson(saveData);
         Debug.Log("Sending JSON: " + json);
@@ -200,7 +215,38 @@ public class GameAPIManager : MonoBehaviour
         public float play_time;
     }
 
-    
+    private IEnumerator LoadTotalPlayTime(int userId)
+    {
+        string jsonData = $"{{\"user_id\":{userId}}}";
+
+        using (var request = new UnityWebRequest(baseUrl + "/load", "POST"))
+        {
+            byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
+            request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+            request.downloadHandler = new DownloadHandlerBuffer();
+            request.SetRequestHeader("Content-Type", "application/json");
+
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                try
+                {
+                    var response = JsonUtility.FromJson<LoadResponse>(request.downloadHandler.text);
+                    if (response.status == "success")
+                    {
+                        totalPlayTime = response.play_time;
+                        Debug.Log($"Загружено общее время: {totalPlayTime}");
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"Ошибка загрузки времени: {e.Message}");
+                }
+            }
+        }
+    }
+
 
 
     public IEnumerator LoadGame(int userId, System.Action<PlayerProgress> callback)
@@ -230,6 +276,7 @@ public class GameAPIManager : MonoBehaviour
 
                     if (response.status == "success")
                     {
+                        totalPlayTime = response.play_time;
                         callback?.Invoke(new PlayerProgress
                         {
                             sceneIndex = response.scene_index,

@@ -50,7 +50,7 @@ public class DiaryUIManager : MonoBehaviour
 
     public void ExitButton()
     {
-        SceneManager.LoadScene("LoadScene");
+        Loader.LoadScene("LoadScene");
     }
 
     public void DisplayEntry(DiaryEntry entry)

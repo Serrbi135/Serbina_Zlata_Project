@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class PlayerScriptPlatformer : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class PlayerScriptPlatformer : MonoBehaviour
 
     public GameObject pauseMenu;
     public GameObject deathMenu;
+    [SerializeField] private CanvasGroup deathCV;
 
     [SerializeField] private Image[] Hearts;
 
@@ -34,7 +36,9 @@ public class PlayerScriptPlatformer : MonoBehaviour
     [SerializeField] private AudioClip collect;
     [SerializeField] private AudioClip death;
     [SerializeField] private AudioClip ui_click;
-    private AudioSource audioSource;
+    [SerializeField] private AudioClip heart_break;
+    //private AudioSource audioSource;
+
 
     [Header("Характеристики")]
     public int HP = 3;
@@ -49,7 +53,7 @@ public class PlayerScriptPlatformer : MonoBehaviour
 
     void Start()
     {
-        audioSource = GameObject.Find("Main Camera").GetComponent<AudioSource>();
+        //audioSource = GameObject.Find("Main Camera").GetComponent<AudioSource>();
 
         Time.timeScale = 1;
         isPause = false;
@@ -61,18 +65,18 @@ public class PlayerScriptPlatformer : MonoBehaviour
 
     public void OnExit()
     {
-        SceneManager.LoadScene(0);
+        Loader.LoadScene(0);
     }
 
     public void OnClickMainMenu()
     {
-        audioSource.PlayOneShot(ui_click);
-        SceneManager.LoadScene(0);
+        AudioManager.Instance.PlaySFX(ui_click);
+        Loader.LoadScene(0);
     }
 
     public void OnContinueClick()
     {
-        audioSource.PlayOneShot(ui_click);
+        AudioManager.Instance.PlaySFX(ui_click);
         isPause = false;
         Time.timeScale = 1;
         pauseMenu.SetActive(false);
@@ -80,8 +84,8 @@ public class PlayerScriptPlatformer : MonoBehaviour
 
     public void OnClickReplay()
     {
-        audioSource.PlayOneShot(ui_click);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        AudioManager.Instance.PlaySFX(ui_click);
+        Loader.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     /*public void OnClickSound()
@@ -132,7 +136,7 @@ public class PlayerScriptPlatformer : MonoBehaviour
             Hearts[0].sprite = Heart_Full;
             Hearts[1].sprite = Heart_Full;
             Hearts[2].sprite = Heart_Null;
-            //Hearts[2].GetComponent<Animator>().Play("heart_anim");
+            
         }
         else if(HP == 1)
         {
@@ -143,13 +147,12 @@ public class PlayerScriptPlatformer : MonoBehaviour
         }
         else if(HP <= 0)
         {
-            //audioSource.PlayOneShot(death);
+            
             isHurt = false;
             Hearts[0].sprite = Heart_Null;
             Hearts[1].sprite = Heart_Null;
             Hearts[2].sprite = Heart_Null;
             //Hearts[0].GetComponent<Animator>().Play("heart_anim");
-            //anim.Play("Mushroom_Death");
             StartCoroutine(waitDeath());
         }
         if(isPause == false && HP > 0)
@@ -176,8 +179,6 @@ public class PlayerScriptPlatformer : MonoBehaviour
 
             if (Input.GetKey(KeyCode.A))
             {
-                //var rot = GameObject.Find("mushroom_rot");
-                //rot.transform.localPosition = new Vector3(-0.1f, rot.transform.localPosition.y, rot.transform.localPosition.z);
                 anim.SetBool("Run", true);
                 gameObject.GetComponent<SpriteRenderer>().flipX = true;
                 shootDir = Vector3.left;
@@ -186,8 +187,6 @@ public class PlayerScriptPlatformer : MonoBehaviour
             }
             if (Input.GetKey(KeyCode.D))
             {
-                //var rot = GameObject.Find("mushroom_rot");
-                //rot.transform.localPosition = new Vector3(0.1f, rot.transform.localPosition.y, rot.transform.localPosition.z);
                 anim.SetBool("Run", true);
                 gameObject.GetComponent<SpriteRenderer>().flipX = false;
                 shootDir = Vector3.right;
@@ -210,7 +209,7 @@ public class PlayerScriptPlatformer : MonoBehaviour
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
         Bullet bulletScript = bullet.GetComponent<Bullet>();
 
-        //Vector2 shootDirection = firePoint.right; 
+        AudioManager.Instance.PlaySFX(hit);
         bulletScript.SetDirection(shootDir);
     }
 
@@ -220,14 +219,14 @@ public class PlayerScriptPlatformer : MonoBehaviour
     {
         if(collision.tag == "Spikes")
         {
-            audioSource.PlayOneShot(hit);
+            AudioManager.Instance.PlaySFX(hit);
             isHurt = true;
             HP -= 1;
             StartCoroutine(waitSpikes());
         }
         else if(collision.tag == "Enemy")
         {
-            //audioSource.PlayOneShot(hit);
+            AudioManager.Instance.PlaySFX(hit);
             HP -= 1;
         }
     }
@@ -238,6 +237,7 @@ public class PlayerScriptPlatformer : MonoBehaviour
         if (collision.tag == "Spikes")
         {
             isHurt = false;
+            AudioManager.Instance.StopSFX();
             StopCoroutine(waitSpikes());
         }
     }
@@ -263,6 +263,7 @@ public class PlayerScriptPlatformer : MonoBehaviour
     public void TakeDamage(int dmg)
     {
         HP -= dmg;
+        AudioManager.Instance.PlaySFX(heart_break);
     }
 
     public IEnumerator waitSpikes()
@@ -270,7 +271,7 @@ public class PlayerScriptPlatformer : MonoBehaviour
         yield return new WaitForSeconds(1f);
         if(isHurt == true)
         {
-            audioSource.PlayOneShot(hit);
+            AudioManager.Instance.PlaySFX(hit);
             HP -= 1;
             //anim.Play("Mushroom_Hurt");
             StartCoroutine(waitSpikes());
@@ -279,11 +280,13 @@ public class PlayerScriptPlatformer : MonoBehaviour
 
     public IEnumerator waitDeath()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.1f);
         deathMenu.SetActive(true);
+        
+        AudioManager.Instance.SetSFXVolume(0);
+        
     }
 
-    //OverlapCircle(rb.position, rayDistance, LayerMask.GetMask("Ground"));
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;

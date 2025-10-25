@@ -99,7 +99,7 @@ public class UIManager : MonoBehaviour
     private void OnLoginSuccess(int userId)
     {
         errorText.text = "Успешный вход!";
-        SceneManager.LoadScene("LoadScene");
+        Loader.LoadScene("LoadScene");
     }
 
     private void OnRegisterSuccess()
@@ -112,14 +112,14 @@ public class UIManager : MonoBehaviour
 
     private void OnNewGameButtonClicked()
     {
-        SceneManager.LoadScene(3);
+        Loader.LoadScene("Sujet_1_A");
 
         PlayerPrefs.DeleteKey("CurrentProgress");
         if (GameProgress.Instance != null)
         {
             GameProgress.Instance.CurrentProgress = new PlayerProgress()
             {
-                sceneIndex = 4, 
+                sceneIndex = 2, 
                 moralityPoints = 0,
                 diaryFlags = new int[20] 
             };
