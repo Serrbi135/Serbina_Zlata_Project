@@ -20,4 +20,6 @@ final_application - окончательная заявка
 
 first_code - Первый показ кода
 
+second_code - Видео 1
+
 
