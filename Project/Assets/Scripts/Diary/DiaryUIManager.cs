@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 using static UnityEngine.EventSystems.EventTrigger;
+using DG.Tweening;
 
 public class DiaryUIManager : MonoBehaviour
 {
@@ -15,11 +16,17 @@ public class DiaryUIManager : MonoBehaviour
     public TMP_Text displayText;
     public GameObject lockedInfoPanel;
 
+    public CanvasGroup diaryUIGame;
+
     [Header("Diary Entries")]
     public List<DiaryEntry> entries;
 
     private void Start()
     {
+        if (DiaryManager.Instance != null)
+        {
+            DiaryManager.Instance.RegisterDiaryUIManager(this);
+        }
         LoadDiaryEntries();
     }
 
@@ -30,20 +37,19 @@ public class DiaryUIManager : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        for(int i = 0; i < entries.Count; i++)
+        if (DiaryManager.Instance != null)
         {
-            if(DiaryManager.Instance.flags[i] != 0)
+            var flags = DiaryManager.Instance.GetFlags();
+            for (int i = 0; i < entries.Count && i < flags.Length; i++)
             {
-                entries[i].isUnlocked = true;
+                entries[i].isUnlocked = flags[i] == 1;
             }
-            
         }
 
         foreach (var entry in entries)
         {
             GameObject buttonObj = Instantiate(entryButtonPrefab, contentPanel);
             DiaryEntryButton button = buttonObj.GetComponent<DiaryEntryButton>();
-
             button.Initialize(entry, this);
         }
     }
@@ -51,6 +57,13 @@ public class DiaryUIManager : MonoBehaviour
     public void ExitButton()
     {
         Loader.LoadScene("LoadScene");
+    }
+
+    public void ExitToGame()
+    {
+        diaryUIGame.interactable = false;
+        diaryUIGame.blocksRaycasts = false;
+        diaryUIGame.alpha = 0f;
     }
 
     public void DisplayEntry(DiaryEntry entry)

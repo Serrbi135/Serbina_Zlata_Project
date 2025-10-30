@@ -69,8 +69,8 @@ public class GameStatsDisplay : MonoBehaviour
         {
             case 0: return "Регистрация";
             case 1: return "Меню загрузки";
-            case 2: return "короч лее";
-            case 3: return "Лпон";
+            case 2: return "Понедельник";
+            case 3: return "Сон понедельника";
             default: return $"Сцена {sceneIndex}";
         }
     }

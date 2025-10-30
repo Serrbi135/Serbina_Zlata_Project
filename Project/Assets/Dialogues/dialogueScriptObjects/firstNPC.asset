@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: "\u041C\u0443\u0436\u0447\u0438\u043D\u0430"
   characterImage: {fileID: 21300000, guid: bda0933fa239ee04bb8a08a2dbb15398, type: 3}
-  isOpeningFlag: 0
+  isOpeningFlag: 1
   destroyAfter: 1
   IndexFlag: 0
   lines:
@@ -22,9 +22,19 @@ MonoBehaviour:
     isChoice: 0
     choices: []
     characterImage: {fileID: 21300000, guid: ca333e71d8f48404d99dcae2608bef4e, type: 3}
-    characterName: 
-  - text: ...
+    characterName: "\u0413\u0413"
+  - text: "\u0421\u0434\u0435\u043B\u0430\u0439 \u0432\u044B\u0431\u043E\u0440"
+    isChoice: 1
+    choices:
+    - text: "\u0425\u043E\u0440\u043E\u0448\u0438\u0439 \u0432\u044B\u0431\u043E\u0440"
+      moralityEffect: 5
+    - text: "\u041F\u043B\u043E\u0445\u043E\u0439 \u0432\u044B\u0431\u043E\u0440"
+      moralityEffect: -5
+    characterImage: {fileID: 21300000, guid: bda0933fa239ee04bb8a08a2dbb15398, type: 3}
+    characterName: NPC
+  - text: "\u0422\u0435\u043F\u0435\u0440\u044C \u0442\u044B \u0437\u043D\u0430\u0435\u0448\u044C
+      \u043F\u0440\u043E \u043C\u0430\u0442\u0438\u043D\u0444\u043E!"
     isChoice: 0
     choices: []
     characterImage: {fileID: 21300000, guid: bda0933fa239ee04bb8a08a2dbb15398, type: 3}
-    characterName: 
+    characterName: NPC

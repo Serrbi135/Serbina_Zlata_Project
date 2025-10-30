@@ -75,6 +75,7 @@
     <Compile Include="Assets\Scripts\LoadMenu\LoadMenu.cs" />
     <Compile Include="Assets\Dialogues\DialogueTrigger.cs" />
     <Compile Include="Assets\Dialogues\PlayerStats.cs" />
+    <Compile Include="Assets\Scripts\Platformer\Scene\toMenu.cs" />
     <Compile Include="Assets\Scripts\Platformer\Enemies\Turrel.cs" />
     <Compile Include="Assets\Scripts\Platformer\Scene\ToNextScene.cs" />
     <Compile Include="Assets\Scripts\Audio\AudioManager.cs" />
@@ -94,9 +95,11 @@
     <Compile Include="Assets\Scripts\Auth\UIManager.cs" />
     <Compile Include="Assets\Scripts\Diary\DiaryEntryButton.cs" />
     <Compile Include="Assets\Scripts\Platformer\Enemies\Tentacle.cs" />
+    <Compile Include="Assets\Scripts\Platformer\Scene\Obuchenie1Menu.cs" />
     <Compile Include="Assets\Scripts\Stats\GameStatsDisplay.cs" />
     <Compile Include="Assets\Scripts\UI\FadeToBlack.cs" />
     <Compile Include="Assets\Dialogues\Dialogue.cs" />
+    <Compile Include="Assets\Scripts\Platformer\Enemies\prefabDie.cs" />
     <Compile Include="Assets\Scripts\Audio\pauseAudioMenu.cs" />
     <Compile Include="Assets\Scripts\Platformer\PlayerScriptPlatformer.cs" />
   </ItemGroup>

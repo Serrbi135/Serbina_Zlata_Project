@@ -120,6 +120,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 5
+  prefabDie: {fileID: 2090009292283357878, guid: 794ee857a93e9c94b9cf15411cf28dee, type: 3}
 --- !u!50 &3645658297099510919
 Rigidbody2D:
   serializedVersion: 4

@@ -124,6 +124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 3
+  prefabDie: {fileID: 2090009292283357878, guid: 794ee857a93e9c94b9cf15411cf28dee, type: 3}
 --- !u!114 &4851220479899282839
 MonoBehaviour:
   m_ObjectHideFlags: 0

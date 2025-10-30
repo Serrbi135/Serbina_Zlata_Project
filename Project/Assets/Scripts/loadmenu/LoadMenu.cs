@@ -14,6 +14,7 @@ public class LoadMenu : MonoBehaviour
     public Button toDiaryButton;
     public Button statOpenButton;
     public Button logoButton;
+    public Button toObuchenieButton;
     public TextMeshProUGUI saveInfoText;
     public TextMeshProUGUI logoText;
     [SerializeField] private CanvasGroup popup;
@@ -27,6 +28,7 @@ public class LoadMenu : MonoBehaviour
 
     [SerializeField] private MoralitySystem moralitySystem;
     [SerializeField] private DiaryManager diaryManager;
+
 
     
 
@@ -43,6 +45,7 @@ public class LoadMenu : MonoBehaviour
         loadGameButton.onClick.AddListener(LoadGame);
         toDiaryButton.onClick.AddListener(OpenDiary);
         statOpenButton.onClick.AddListener(OpenStats);
+        toObuchenieButton.onClick.AddListener(ToObuchenie);
 
         Time.timeScale = 1f;
 
@@ -60,6 +63,7 @@ public class LoadMenu : MonoBehaviour
         int userId = PlayerPrefs.GetInt("CurrentUserId");
 
         StartCoroutine(apiManager.CheckSaveExists(currentUserId, (exists) => {
+            hasSave = exists;
             if (exists)
             {
                 saveInfoText.text = $"ѕоследнее сохранение найдено!";
@@ -73,11 +77,16 @@ public class LoadMenu : MonoBehaviour
         }));
     }
 
+
     private void OpenDiary()
     {
-        StartCoroutine(apiManager.LoadAndApplyDiaryFlags(PlayerPrefs.GetInt("CurrentUserId")));
-        Loader.LoadScene("Diary");
+        StartCoroutine(OpenDiaryRoutine());
+    }
 
+    private IEnumerator OpenDiaryRoutine()
+    {
+        yield return StartCoroutine(apiManager.LoadAndApplyDiaryFlags(PlayerPrefs.GetInt("CurrentUserId")));
+        Loader.LoadScene("Diary");
     }
 
     private void OpenStats()
@@ -85,8 +94,6 @@ public class LoadMenu : MonoBehaviour
         Loader.LoadScene("Stats");
 
     }
-
-    
 
     public void LoadGame()
     {
@@ -127,19 +134,42 @@ public class LoadMenu : MonoBehaviour
         {
             StartCoroutine(apiManager.DeleteSave(currentUserId, () => {
                 LoadFirstLevel();
+                ResetLocalData();
             }));
 
-            for (int i = 0; i < 20; i++)
-            {
-                flags[i] = 0;
-            }
-            DiaryManager.Instance.SetFlags(flags);
-            MoralitySystem.Instance.SetPoints(0);
             
         }
         else
         {
             LoadFirstLevel();
+            ResetLocalData();
+        }
+    }
+
+
+    private void ResetLocalData()
+    {
+        flags = new int[20]; 
+        for (int i = 0; i < flags.Length; i++)
+        {
+            flags[i] = 0;
+        }
+
+        if (DiaryManager.Instance != null)
+        {
+            DiaryManager.Instance.SetFlags(flags);
+        }
+
+        if (MoralitySystem.Instance != null)
+        {
+            MoralitySystem.Instance.SetPoints(0);
+        }
+
+        SaveLoadManager saveManager = FindObjectOfType<SaveLoadManager>();
+        if (saveManager != null)
+        {
+            saveManager.ResetCurrentSessionTime();
+            saveManager.LoadSavedPlayTime(0f);
         }
     }
 
@@ -162,6 +192,16 @@ public class LoadMenu : MonoBehaviour
     {
         Loader.LoadScene("Sujet_1_A"); 
         //ѕќћ≈Ќя“№
+    }
+
+    private void ToObuchenie()
+    {
+        Loader.LoadScene("Obuchenie");
+    }
+
+    public void ToRegButton()
+    {
+        Loader.LoadScene("Registration");
     }
 
     

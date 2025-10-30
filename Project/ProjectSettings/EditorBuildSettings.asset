@@ -9,8 +9,17 @@ EditorBuildSettings:
     path: Assets/Scenes/Registration.unity
     guid: 54dfc81e0c9dc4d42bed30d2b6676d23
   - enabled: 1
+    path: Assets/Scenes/Obuchenie.unity
+    guid: 41282e7df18fe5545b11c90ad0eb15a4
+  - enabled: 1
+    path: Assets/Scenes/Obuchenie 1.unity
+    guid: eca08f2cfafeab143ad53299682237b0
+  - enabled: 1
     path: Assets/Scenes/LoadScene.unity
     guid: d6b632316c5fea14a8934e859fafa768
+  - enabled: 1
+    path: Assets/Scenes/Sujet_1_A 2.unity
+    guid: faf0102b43f07ca41b0c7d895d6b13b0
   - enabled: 1
     path: Assets/Scenes/Sujet_1_A.unity
     guid: 799f66ac8bc5b354c86ae46f435fd0cd
@@ -18,17 +27,8 @@ EditorBuildSettings:
     path: Assets/Scenes/Level 1.unity
     guid: f287e87e86e78164e957e5941430c69f
   - enabled: 1
-    path: Assets/Scenes/Level.unity
-    guid: c794b4515a5481344968a6d385f9ae17
-  - enabled: 1
     path: Assets/Scenes/Final.unity
     guid: 8100f7979d288694db0f6fe922e093f8
-  - enabled: 0
-    path: Assets/Scenes/1SujetLevel.unity
-    guid: 8c9cfa26abfee488c85f1582747f6a02
-  - enabled: 0
-    path: Assets/Scenes/Dialogues 1.unity
-    guid: d6add6d37885c504a8856141d0f80064
   - enabled: 1
     path: Assets/Scenes/LoadLobby.unity
     guid: 3c0073a8d1cac4a4ab702c734dfe71c2
@@ -38,4 +38,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Stats.unity
     guid: 0d4aac3f4b67dbf449a8e13b17c7e7d8
+  - enabled: 1
+    path: Assets/Scenes/Titres.unity
+    guid: d01996c292b2f714ca5a1fc596ef7963
   m_configObjects: {}

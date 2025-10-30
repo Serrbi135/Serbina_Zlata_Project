@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using DG.Tweening;
 
 
 public class SaveLoadManager : MonoBehaviour
@@ -12,12 +13,15 @@ public class SaveLoadManager : MonoBehaviour
     public GameObject saveLoadPanelPrefab;
     public Button saveButton;
     public Button exitButton;
+    public Button toDiaryButton;
+    public CanvasGroup savePopup;
+    public CanvasGroup diaryUIGame;
 
     private float currentSessionTime = 0f; 
     private bool isCountingTime = false;
 
     private GameAPIManager apiManager;
-    public  SaveLoadManager Instance;
+    public static SaveLoadManager Instance;
     private int currentUserId;
 
     private void Start()
@@ -41,6 +45,9 @@ public class SaveLoadManager : MonoBehaviour
 
         saveButton = currentPanel.transform.Find("saveButton").GetComponent<Button>();
         exitButton = currentPanel.transform.Find("exitButton").GetComponent<Button>();
+        toDiaryButton = currentPanel.transform.Find("toDiaryButton").GetComponent<Button>();
+        savePopup = currentPanel.transform.Find("savePopup").GetComponent<CanvasGroup>();
+        diaryUIGame = currentPanel.transform.Find("Diary").GetComponent<CanvasGroup>();
 
         if (saveButton == null || exitButton == null)
         {
@@ -50,15 +57,21 @@ public class SaveLoadManager : MonoBehaviour
 
         saveButton.onClick.AddListener(SaveGame);
         exitButton.onClick.AddListener(ExitFrom);
+        toDiaryButton.onClick.AddListener(ToDiary);
 
         currentPanel.SetActive(false);
         StartPlayTime();
+        savePopup.alpha = 0;
+
+        diaryUIGame.interactable = false;
+        diaryUIGame.blocksRaycasts = false;
+        diaryUIGame.alpha = 0;
 
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && !(SceneManager.GetActiveScene().name == "LoadScene") && !(SceneManager.GetActiveScene().name == "LoadLobby") && !(SceneManager.GetActiveScene().name == "Registration") && !(SceneManager.GetActiveScene().name == "Diary"))
+        if (Input.GetKeyDown(KeyCode.Escape) && !(SceneManager.GetActiveScene().name == "LoadScene") && !(SceneManager.GetActiveScene().name == "Obuchenie") && !(SceneManager.GetActiveScene().name == "Obuchenie 1") && !(SceneManager.GetActiveScene().name == "LoadLobby") && !(SceneManager.GetActiveScene().name == "Registration") && !(SceneManager.GetActiveScene().name == "Diary"))
         {
             ToggleMenu();
         }
@@ -110,6 +123,8 @@ public class SaveLoadManager : MonoBehaviour
         bool isActive = !currentPanel.activeSelf;
         currentPanel.SetActive(isActive);
 
+        savePopup.alpha = 0;
+
         if (isActive)
         {
             PausePlayTime();
@@ -132,12 +147,19 @@ public class SaveLoadManager : MonoBehaviour
         Loader.LoadScene("LoadScene");
     }
 
+    private void ToDiary()
+    {
+        diaryUIGame.interactable = true;
+        diaryUIGame.blocksRaycasts = true;
+        diaryUIGame.alpha = 1f;
+    }
+
 
 
     public void SaveGame()
     {
         PlayerProgress progress = GetCurrentProgress();
-
+        savePopup.alpha = 1;
         StartCoroutine(apiManager.SaveGame(
             currentUserId,
             progress,
@@ -147,6 +169,8 @@ public class SaveLoadManager : MonoBehaviour
                     Debug.Log("Game saved successfully!");
                     apiManager.SetTotalPlayTime(GetTotalPlayTime());
                     currentSessionTime = 0f;
+                    
+
                 }
                 else
                 {

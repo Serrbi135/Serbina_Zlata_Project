@@ -151,6 +151,10 @@ public class GameAPIManager : MonoBehaviour
             {
                 onSuccess?.Invoke();
             }
+            else
+            {
+                Debug.LogError($"DeleteSave failed: {request.error}");
+            }
         }
     }
 
@@ -352,12 +356,11 @@ public class GameAPIManager : MonoBehaviour
             }
         });
     }
-
     public IEnumerator CheckSaveExists(int userId, Action<bool> callback)
     {
         string jsonData = $"{{\"user_id\":{userId}}}";
 
-        using (var request = new UnityWebRequest(baseUrl + "/load", "POST"))
+        using (var request = new UnityWebRequest(baseUrl + "/check_save", "POST"))
         {
             byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
             request.uploadHandler = new UploadHandlerRaw(bodyRaw);
@@ -368,20 +371,74 @@ public class GameAPIManager : MonoBehaviour
 
             if (request.result == UnityWebRequest.Result.Success)
             {
-                var response = JsonUtility.FromJson<LoadResponse>(request.downloadHandler.text);
-                callback?.Invoke(response.status == "success");
+                var response = JsonUtility.FromJson<SaveCheckResponse>(request.downloadHandler.text);
+                callback?.Invoke(response.exists);
             }
             else
             {
-                if (request.responseCode == 404)
+                Debug.LogError($"CheckSaveExists failed: {request.error}");
+                callback?.Invoke(false);
+            }
+        }
+    }
+
+    [System.Serializable]
+    private class SaveCheckResponse
+    {
+        public bool exists;
+    }
+
+    [System.Serializable]
+    private class DeleteSaveResponse
+    {
+        public string status;
+        public string message;
+    }
+
+
+    public IEnumerator GetSaveData(int userId, System.Action<PlayerProgress> callback)
+    {
+        string jsonData = $"{{\"user_id\":{userId}}}";
+
+        using (var request = UnityWebRequest.PostWwwForm(baseUrl + "/load", "POST"))
+        {
+            byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
+            request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+            request.downloadHandler = new DownloadHandlerBuffer();
+            request.SetRequestHeader("Content-Type", "application/json");
+
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                try
                 {
-                    callback?.Invoke(false);
+                    var response = JsonUtility.FromJson<LoadResponse>(request.downloadHandler.text);
+                    if (response.status == "success")
+                    {
+                        callback?.Invoke(new PlayerProgress
+                        {
+                            sceneIndex = response.scene_index,
+                            moralityPoints = response.morality,
+                            diaryFlags = response.diary_flags,
+                            playTime = response.play_time
+                        });
+                    }
+                    else
+                    {
+                        callback?.Invoke(null);
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    Debug.LogError($"CheckSaveExists failed: {request.error}");
-                    callback?.Invoke(false);
+                    Debug.LogError($"Ошибка парсинга ответа: {e.Message}");
+                    callback?.Invoke(null);
                 }
+            }
+            else
+            {
+                Debug.LogError($"Ошибка загрузки: {request.error}");
+                callback?.Invoke(null);
             }
         }
     }
@@ -405,11 +462,7 @@ public class GameAPIManager : MonoBehaviour
     
     
 
-    [System.Serializable]
-    private class SaveCheckResponse
-    {
-        public bool exists;
-    }
+    
 }
 
 

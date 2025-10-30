@@ -84,44 +84,21 @@ public class PlayerScriptPlatformer : MonoBehaviour
 
     public void OnClickReplay()
     {
+        
         AudioManager.Instance.PlaySFX(ui_click);
         Loader.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    /*public void OnClickSound()
-    {
-        audioSource.PlayOneShot(ui_click);
-        if (audioSource.volume == 1)
-        {
-            GameObject.Find("Sound_Button").GetComponent<Image>().sprite = soundOff;
-            audioSource.volume = 0;
-        }
-        else if(audioSource.volume == 0)
-        {
-            GameObject.Find("Sound_Button").GetComponent<Image>().sprite = soundOn;
-            audioSource.volume = 1;
-        }
-    }*/
+    
 
-    // Update is called once per frame
     void Update()
     {
-        //RaycastHit2D hit = Physics2D.Raycast(rb.position, Vector2.down, rayDistance, LayerMask.GetMask("Ground"));
         isGround = Physics2D.OverlapCircle(rb.position, rayDistance, LayerMask.GetMask("Ground"));
         if(isGround )
         {
             anim.SetBool("Jump", false);
             doubleJump = false;
         }
-        /*if (hit.collider != null)
-        {
-            isGround = true;
-            doubleJump = false;
-        }
-        else
-        {
-            isGround = false;
-        }*/
 
         
 
@@ -163,17 +140,11 @@ public class PlayerScriptPlatformer : MonoBehaviour
                 {
                     rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
                     anim.SetBool("Jump", true);
-                    /*jumpAnim.SetActive(true);
-                    jumpAnim.transform.position = new Vector3(transform.position.x, transform.position.y, -2f);
-                    jumpAnim.GetComponent<Animator>().SetTrigger("jump");*/
                 }
                 else if (!doubleJump && rb.velocity.y < 0)
                 {
                     doubleJump = true;
                     rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
-                    /*jumpAnim.SetActive(true);
-                    jumpAnim.transform.position = new Vector3(transform.position.x, transform.position.y, -2f);
-                    jumpAnim.GetComponent<Animator>().SetTrigger("jump");*/
                 }
             }
 
@@ -248,12 +219,6 @@ public class PlayerScriptPlatformer : MonoBehaviour
         {
             OnExit();
         }
-        else if(collision.gameObject.name == "SecretRoom")
-        {
-            collision.gameObject.GetComponent<BoxCollider2D>().enabled = false;
-            collision.gameObject.SetActive(false);
-            GameObject.Find("Star_3_Light").GetComponent<Light>().enabled = true;
-        }
         else if(collision.gameObject.name == "DoorCollider")
         {
             OnExit();
@@ -273,7 +238,6 @@ public class PlayerScriptPlatformer : MonoBehaviour
         {
             AudioManager.Instance.PlaySFX(hit);
             HP -= 1;
-            //anim.Play("Mushroom_Hurt");
             StartCoroutine(waitSpikes());
         }
     }
@@ -283,7 +247,7 @@ public class PlayerScriptPlatformer : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         deathMenu.SetActive(true);
         
-        AudioManager.Instance.SetSFXVolume(0);
+        //AudioManager.Instance.SetSFXVolume(0);
         
     }
 

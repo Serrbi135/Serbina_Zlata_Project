@@ -38,7 +38,7 @@ public class UIManager : MonoBehaviour
         backToLoginButton.onClick.AddListener(ShowLoginPanel);
         loginButton.onClick.AddListener(OnLoginButtonClicked);
         registerButton.onClick.AddListener(OnRegisterButtonClicked);
-        newGameButton.onClick.AddListener(OnNewGameButtonClicked);
+        //newGameButton.onClick.AddListener(OnNewGameButtonClicked);
 
         apiManager = gameObject.AddComponent<GameAPIManager>();
     }
@@ -110,7 +110,7 @@ public class UIManager : MonoBehaviour
         ShowLoginPanel();
     }
 
-    private void OnNewGameButtonClicked()
+    /*private void OnNewGameButtonClicked()
     {
         Loader.LoadScene("Sujet_1_A");
 
@@ -124,7 +124,7 @@ public class UIManager : MonoBehaviour
                 diaryFlags = new int[20] 
             };
         }
-    }
+    }*/
 
     public void ShowError(string message)
     {

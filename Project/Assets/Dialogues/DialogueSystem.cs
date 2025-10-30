@@ -164,8 +164,8 @@ public class DialogueSystem : MonoBehaviour
     {
         GameObject effect = Instantiate(moralityEffectPrefab, dialoguePanel.transform);
         TMP_Text effectText = effect.GetComponent<TMP_Text>();
-        effectText.text = (amount > 0 ? "+" : "") + amount + " мораль";
-        effectText.color = amount > 0 ? Color.green : Color.red;
+        effectText.text = (amount > 0 ? "учёба +" : "общение +") + amount;
+        effectText.color = amount > 0 ? Color.blue : Color.red;
 
         Destroy(effect, 2f);
     }

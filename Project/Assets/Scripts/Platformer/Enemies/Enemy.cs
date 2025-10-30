@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Enemy : MonoBehaviour
 {
     public int health = 3;
+    public GameObject prefabDie;
 
     public void TakeDamage(int damage)
     {
@@ -19,6 +21,7 @@ public class Enemy : MonoBehaviour
     void Die()
     {
         Destroy(gameObject);
+        Instantiate(prefabDie, transform.position, Quaternion.identity);
     }
 
     
