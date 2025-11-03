@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
 
 public class DialogueSystem : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class DialogueSystem : MonoBehaviour
     public TMP_Text dialogueText;
     public Button[] choiceButtons;
     public GameObject moralityEffectPrefab;
+    public GameObject diaryEffectPrefab;
+
 
 
     public event Action OnDialogueEnd;
@@ -27,7 +30,6 @@ public class DialogueSystem : MonoBehaviour
     private int currentLineIndex;
     private bool isTyping;
     private bool isChoiceDialogue;
-    private int moralityChange;
     private PlayerScriptSujet playerMovement;
 
 
@@ -63,6 +65,11 @@ public class DialogueSystem : MonoBehaviour
         dialoguePanel.SetActive(true);
         characterImage.sprite = dialogue.characterImage;
         characterNameText.text = dialogue.characterName;
+        if (currentDialogue.isOpeningFlag)
+        {
+            ShowDiaryEffect();
+        }
+
         DisplayNextLine();
     }
 
@@ -80,8 +87,6 @@ public class DialogueSystem : MonoBehaviour
         {
             DialogueLine line = currentDialogue.lines[currentLineIndex];
 
-            characterImage.sprite = line.characterImage;
-            characterNameText.text = line.characterName;
             if(line.characterImage != null) 
             { 
                 characterImage.sprite = line.characterImage; 
@@ -90,6 +95,7 @@ public class DialogueSystem : MonoBehaviour
             {
                 characterImage.sprite = currentDialogue.characterImage;
             }
+
             if (line.characterName != null)
             {
                 characterNameText.text = line.characterName;
@@ -164,8 +170,22 @@ public class DialogueSystem : MonoBehaviour
     {
         GameObject effect = Instantiate(moralityEffectPrefab, dialoguePanel.transform);
         TMP_Text effectText = effect.GetComponent<TMP_Text>();
-        effectText.text = (amount > 0 ? "учёба +" : "общение +") + amount;
+        CanvasGroup canvasGroup = effect.GetComponent<CanvasGroup>();
+        canvasGroup.DOFade(1, 1f);
+        effectText.text = (amount > 0 ? "общение +" : "учёба +") + Mathf.Abs(amount);
         effectText.color = amount > 0 ? Color.blue : Color.red;
+
+        Destroy(effect, 2f);
+    }
+
+    private void ShowDiaryEffect()
+    {
+        GameObject effect = Instantiate(diaryEffectPrefab, dialoguePanel.transform);
+        CanvasGroup canvasGroup = effect.GetComponent<CanvasGroup>();
+        canvasGroup.DOFade(1, 1f);
+        TMP_Text effectText = effect.GetComponent<TMP_Text>();
+        effectText.text = "Открыта запись в дневнике!";
+        effectText.color = Color.magenta;
 
         Destroy(effect, 2f);
     }
@@ -175,8 +195,8 @@ public class DialogueSystem : MonoBehaviour
         dialoguePanel.SetActive(false);
         if (currentDialogue.isOpeningFlag)
         {
-            DiaryManager.Instance.UnlockFlag(currentDialogue.IndexFlag); 
-            //анимацию проиграть!
+            DiaryManager.Instance.UnlockFlag(currentDialogue.IndexFlag);
+            ShowDiaryEffect();
         }
 
         currentDialogue = null;

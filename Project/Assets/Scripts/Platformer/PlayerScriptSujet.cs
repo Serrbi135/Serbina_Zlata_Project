@@ -13,15 +13,7 @@ public class PlayerScriptSujet : MonoBehaviour
     public static PlayerScriptSujet Instance;
 
     private GameObject pauseMenu;
-    private GameObject deathMenu;
-    //[SerializeField] private GameObject jumpAnim;
 
-    [SerializeField] private Image[] Hearts;
-
-    [SerializeField] private Sprite Heart_Full;
-    [SerializeField] private Sprite Heart_Null;
-
-    private bool isGround;
     private bool isLeft = false;
 
     private bool isPause = false;
@@ -31,7 +23,6 @@ public class PlayerScriptSujet : MonoBehaviour
     [SerializeField] private Sprite soundOff;
 
     [SerializeField] private float rayDistance = 0.6f;
-    private bool doubleJump = false;
 
     [Header("Sounds")]
     [SerializeField] private AudioClip hit;
@@ -42,8 +33,6 @@ public class PlayerScriptSujet : MonoBehaviour
 
     [Header("Характеристики")]
     public float Speed = 1f;
-    public float jumpForce = 4f;
-    public int Energy = 0;
     private bool canMove = true;
 
     public GameObject currentPanel;
@@ -101,32 +90,11 @@ public class PlayerScriptSujet : MonoBehaviour
     {
         RaycastHit2D hit = Physics2D.Raycast(rb.position, Vector2.down, rayDistance, LayerMask.GetMask("Ground"));
 
-        if(hit.collider != null)
-        {
-            isGround = true;
-            doubleJump = false;
-        }
-        else
-        {
-            isGround = false;
-        }
 
         
         
             if(canMove)
             {
-                if (Input.GetKeyDown(KeyCode.W))
-                {
-                    if (isGround)
-                    {
-                        rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
-                    }
-                    else if (!doubleJump && rb.velocity.y < 0)
-                    {
-                        doubleJump = true;
-                        rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
-                    }
-                }
 
                 if (Input.GetKey(KeyCode.A))
                 {

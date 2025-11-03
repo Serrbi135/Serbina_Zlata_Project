@@ -149,11 +149,13 @@ public class GameAPIManager : MonoBehaviour
 
             if (request.result == UnityWebRequest.Result.Success)
             {
+                Debug.Log("Save deleted successfully on server");
                 onSuccess?.Invoke();
             }
             else
             {
                 Debug.LogError($"DeleteSave failed: {request.error}");
+                onSuccess?.Invoke();
             }
         }
     }

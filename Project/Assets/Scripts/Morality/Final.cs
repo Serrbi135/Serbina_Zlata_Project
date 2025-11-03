@@ -56,14 +56,14 @@ public class Final : MonoBehaviour
             status.text = "Поздравляем! Вы закончили лицей на отлично и поступили в ВУЗ по олимпиаде. Вы научились учиться, хотя слегка устали. Также вы обрели друзей-олимпиадников! ";
         }
         
-        if (openedFlags == 20)
+        /*if (openedFlags == 20)
         {
             statusDiary.text = "Ого, да ты постарался и собрал всю информацию о лицее! Отдельное спасибо от автора";
         }
         else
         {
-            statusDiary.text = $"Открыто {openedFlags}/20 записей";
-        }
+            statusDiary.text = "Открыто записей: " + openedFlags + "/20";
+        }*/
     }
 
     void LoadAndDisplaySaveStats()
@@ -75,6 +75,11 @@ public class Final : MonoBehaviour
                 if (progress != null)
                 {
                     openedFlags = CountUnlockedDiaryFlags(progress.diaryFlags);
+                    statusDiary.text = "Открыто записей: " + openedFlags + "/20";
+                }
+                if (openedFlags == 20)
+                {
+                    statusDiary.text = "Ого, да ты постарался и собрал всю информацию о лицее! Отдельное спасибо от автора";
                 }
             }));
         }

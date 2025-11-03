@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d527021d31ee43c44bc79b682e4d4d3e, type: 3}
+  m_Name: firstNPC
+  m_EditorClassIdentifier: 
+  characterName: "\u041C\u0443\u0436\u0447\u0438\u043D\u0430"
+  characterImage: {fileID: 21300000, guid: bda0933fa239ee04bb8a08a2dbb15398, type: 3}
+  isOpeningFlag: 0
+  destroyAfter: 1
+  IndexFlag: 0
+  lines:
+  - text: "\u0422\u044B \u043C\u043E\u0436\u0435\u0448\u044C \u043C\u0435\u043D\u044F\u0442\u044C\n\u0441\u0432\u043E\u044E
+      \u0441\u0443\u0434\u044C\u0431\u0443!"
+    isChoice: 0
+    choices: []
+    characterImage: {fileID: 21300000, guid: ca333e71d8f48404d99dcae2608bef4e, type: 3}
+    characterName: 
+  - text: "\u0427\u0435\u0433\u043E?"
+    isChoice: 0
+    choices: []
+    characterImage: {fileID: 21300000, guid: bda0933fa239ee04bb8a08a2dbb15398, type: 3}
+    characterName: "\u0417\u0430\u0440\u044F"
+  - text: "\u0414\u0435\u043B\u0430\u0439 \u0442\u043E\u0442 \u0432\u044B\u0431\u043E\u0440,
+      \u043A\u043E\u0442\u043E\u0440\u044B\u0439 \u0441\u0447\u0438\u0442\u0430\u0435\u0448\u044C\n\u043D\u0443\u0436\u043D\u044B\u043C
+      \u0438 \u0443\u0432\u0438\u0434\u0438\u0448\u044C, \u043A\u0430\u043A \u043C\u0435\u043D\u044F\u0435\u0442\u0441\u044F\n\u0442\u0432\u043E\u044F
+      \u0441\u0443\u0434\u044C\u0431\u0430."
+    isChoice: 0
+    choices: []
+    characterImage: {fileID: 21300000, guid: bda0933fa239ee04bb8a08a2dbb15398, type: 3}
+    characterName: 

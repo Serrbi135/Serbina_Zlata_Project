@@ -69,6 +69,7 @@
     <Compile Include="Assets\Dialogues\DialogueSystem.cs" />
     <Compile Include="Assets\Scripts\Diary\DiarySystem.cs" />
     <Compile Include="Assets\Scripts\Platformer\PlayerScriptSujet.cs" />
+    <Compile Include="Assets\Scripts\UI\preFinal.cs" />
     <Compile Include="Assets\Scripts\Auth\SaveLoadManager.cs" />
     <Compile Include="Assets\Scripts\Diary\DiaryEntry.cs" />
     <Compile Include="Assets\Scripts\Morality\MoralitySystem.cs" />
@@ -100,6 +101,7 @@
     <Compile Include="Assets\Scripts\UI\FadeToBlack.cs" />
     <Compile Include="Assets\Dialogues\Dialogue.cs" />
     <Compile Include="Assets\Scripts\Platformer\Enemies\prefabDie.cs" />
+    <Compile Include="Assets\Scripts\LoadLobby\SleepingAnim.cs" />
     <Compile Include="Assets\Scripts\Audio\pauseAudioMenu.cs" />
     <Compile Include="Assets\Scripts\Platformer\PlayerScriptPlatformer.cs" />
   </ItemGroup>

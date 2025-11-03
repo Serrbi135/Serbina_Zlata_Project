@@ -17,6 +17,8 @@ public class SaveLoadManager : MonoBehaviour
     public CanvasGroup savePopup;
     public CanvasGroup diaryUIGame;
 
+    private bool isGameSaved = false;
+
     private float currentSessionTime = 0f; 
     private bool isCountingTime = false;
 
@@ -32,17 +34,7 @@ public class SaveLoadManager : MonoBehaviour
 
         currentPanel.transform.SetParent(transform, false);
         Canvas canvas = currentPanel.GetComponent<Canvas>();
-        /*if (canvas != null)
-        {
-            canvas.worldCamera = Camera.main; 
-            canvas.sortingLayerName = "UI";
-            canvas.sortingOrder = 100;
-        }
-        else
-        {
-            Debug.LogError("Canvas component missing!");
-        }*/
-
+        
         saveButton = currentPanel.transform.Find("saveButton").GetComponent<Button>();
         exitButton = currentPanel.transform.Find("exitButton").GetComponent<Button>();
         toDiaryButton = currentPanel.transform.Find("toDiaryButton").GetComponent<Button>();
@@ -66,6 +58,8 @@ public class SaveLoadManager : MonoBehaviour
         diaryUIGame.interactable = false;
         diaryUIGame.blocksRaycasts = false;
         diaryUIGame.alpha = 0;
+
+        UpdateDiaryButtonState();
 
     }
 
@@ -120,7 +114,15 @@ public class SaveLoadManager : MonoBehaviour
     }
     private void ToggleMenu()
     {
+        if (currentPanel.activeSelf)
+        {
+            isGameSaved = false;
+            diaryUIGame.interactable = false;
+            diaryUIGame.blocksRaycasts = false;
+            diaryUIGame.alpha = 0f;
+        }
         bool isActive = !currentPanel.activeSelf;
+        
         currentPanel.SetActive(isActive);
 
         savePopup.alpha = 0;
@@ -135,6 +137,8 @@ public class SaveLoadManager : MonoBehaviour
         }
 
         Time.timeScale = isActive ? 0f : 1f;
+
+        UpdateDiaryButtonState();
     }
 
 
@@ -149,9 +153,22 @@ public class SaveLoadManager : MonoBehaviour
 
     private void ToDiary()
     {
+        StartCoroutine(LoadDiaryAndOpen());
+    }
+
+    private IEnumerator LoadDiaryAndOpen()
+    {
+        yield return StartCoroutine(apiManager.LoadAndApplyDiaryFlags(currentUserId));
+
         diaryUIGame.interactable = true;
         diaryUIGame.blocksRaycasts = true;
         diaryUIGame.alpha = 1f;
+
+        DiaryUIManager diaryUI = diaryUIGame.GetComponent<DiaryUIManager>();
+        if (diaryUI != null)
+        {
+            diaryUI.LoadDiaryEntries();
+        }
     }
 
 
@@ -169,16 +186,38 @@ public class SaveLoadManager : MonoBehaviour
                     Debug.Log("Game saved successfully!");
                     apiManager.SetTotalPlayTime(GetTotalPlayTime());
                     currentSessionTime = 0f;
-                    
 
+                    isGameSaved = true;
+                    UpdateDiaryButtonState();
                 }
                 else
                 {
                     
-                    Debug.LogError($"Save failed");
+                    Debug.LogError("Save failed");
                 }
             }
         ));
+    }
+
+
+    private void UpdateDiaryButtonState()
+    {
+        if (toDiaryButton != null)
+        {
+            toDiaryButton.interactable = isGameSaved;
+
+            TextMeshProUGUI buttonText = toDiaryButton.GetComponentInChildren<TextMeshProUGUI>();
+            if (buttonText != null)
+            {
+                buttonText.text = isGameSaved ? "Дневник" : "Сначала сохраните игру";
+            }
+        }
+    }
+
+    public void ResetSaveFlag()
+    {
+        isGameSaved = false;
+        UpdateDiaryButtonState();
     }
 
     private PlayerProgress GetCurrentProgress()

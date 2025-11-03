@@ -954,7 +954,7 @@ MonoBehaviour:
       \u043F\u0440\u043E\u0435\u043A\u0442\u0430\u0445, \u043E\u0440\u0433\u0430\u043D\u0438\u0437\u0430\u0446\u0438\u044E
       \u0441\u043E\u0431\u044B\u0442\u0438\u0439, \u0441\u0430\u043C\u043E\u0443\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u0435
       \u0438 \u0432\u043E\u043B\u043E\u043D\u0442\u0435\u0440\u0441\u0442\u0432\u043E."
-    image: {fileID: 21300000, guid: be9391a1b4bfd7043beae9ba54f533dd, type: 3}
+    image: {fileID: 21300000, guid: 479b29b2c1615374199e1d6e2b3c7ca9, type: 3}
     isUnlocked: 0
   - id: 11
     title: "\u0418\u0412\u0420"
@@ -967,7 +967,7 @@ MonoBehaviour:
       \u0438 \u0437\u0430\u0449\u0438\u0449\u0430\u0435\u0442 \u0432 \u043C\u0430\u0435
       \u0438\u043B\u0438 \u043D\u043E\u044F\u0431\u0440\u0435 \u0441\u043B\u0435\u0434\u0443\u044E\u0449\u0435\u0433\u043E
       \u0443\u0447\u0435\u0431\u043D\u043E\u0433\u043E \u0433\u043E\u0434\u0430."
-    image: {fileID: 21300000, guid: be9391a1b4bfd7043beae9ba54f533dd, type: 3}
+    image: {fileID: 21300000, guid: c729d61cb959abb44949093bd3078993, type: 3}
     isUnlocked: 0
   - id: 12
     title: 2359
@@ -981,7 +981,7 @@ MonoBehaviour:
       \u0434\u0435\u043B \u0434\u043E \u0441\u043E\u043F\u0440\u043E\u0432\u043E\u0436\u0434\u0435\u043D\u0438\u044F
       \u0432\u044B\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u044F \u0438\u043D\u0434\u0438\u0432\u0438\u0434\u0443\u0430\u043B\u044C\u043D\u043E\u0439
       \u0432\u044B\u043F\u0443\u0441\u043A\u043D\u043E\u0439 \u0440\u0430\u0431\u043E\u0442\u044B."
-    image: {fileID: 21300000, guid: be9391a1b4bfd7043beae9ba54f533dd, type: 3}
+    image: {fileID: 21300000, guid: 445f2d36d1b9b4f48be88e54a1cd58a4, type: 3}
     isUnlocked: 0
   - id: 13
     title: "\u0421\u041B"
@@ -989,7 +989,7 @@ MonoBehaviour:
       (\u0421\u041B) - \u043E\u0440\u0433\u0430\u043D \u0443\u0447\u0435\u043D\u0438\u0447\u0435\u0441\u043A\u043E\u0433\u043E
       \u0441\u0430\u043C\u043E\u0443\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u044F
       \u041B\u0438\u0446\u0435\u044F \u041D\u0418\u0423 \u0412\u0428\u042D."
-    image: {fileID: 21300000, guid: be9391a1b4bfd7043beae9ba54f533dd, type: 3}
+    image: {fileID: 21300000, guid: d9a5c5942fd047047988df393e1f5fc5, type: 3}
     isUnlocked: 0
   - id: 14
     title: "\u0424\u0414"
@@ -1014,7 +1014,7 @@ MonoBehaviour:
       (\u0422\u0440\u0438\u0444\u0430) - \u0422\u0440\u0438\u0444\u043E\u043D\u043E\u0432\u0441\u043A\u0430\u044F
       \u0443\u043B\u0438\u0446\u0430, \u0434.\_57, \u0441\u0442\u0440.\_2\_(\u0412\u043E\u0441\u0442\u043E\u043A,
       \u0413\u0443\u043C, \u042E\u0440, \u0414\u0438\u0437\u0430\u0439\u043D)"
-    image: {fileID: 21300000, guid: be9391a1b4bfd7043beae9ba54f533dd, type: 3}
+    image: {fileID: 21300000, guid: b1602fa80bd394246918b5d08df2ea39, type: 3}
     isUnlocked: 0
   - id: 16
     title: "\u0420\u0435\u0439\u0442\u0438\u043D\u0433"
@@ -1036,7 +1036,7 @@ MonoBehaviour:
       \u0422\u0430\u043A\u0436\u0435 \u0432 \u043B\u0438\u0446\u0435\u0439 \u043C\u043E\u0436\u043D\u043E
       \u043F\u043E\u0441\u0442\u0443\u043F\u0438\u0442\u044C \u0441 \u043F\u043E\u043C\u043E\u0449\u044C\u044E
       \u0424\u0414\u041F."
-    image: {fileID: 21300000, guid: be9391a1b4bfd7043beae9ba54f533dd, type: 3}
+    image: {fileID: 21300000, guid: 0391f80cb67e2d442aa799c27e3b52e1, type: 3}
     isUnlocked: 0
   - id: 18
     title: "\u0421\u0438\u0441\u0442\u0435\u043C\u0430 \u043E\u0446\u0435\u043D\u0438\u0432\u0430\u043D\u0438\u044F"
@@ -1054,7 +1054,7 @@ MonoBehaviour:
       \u043E\u0446\u0435\u043D\u043E\u043A, \u0430 \u043F\u043E \u0444\u043E\u0440\u043C\u0443\u043B\u0435,
       \u0433\u0434\u0435 \u0440\u0430\u0437\u043D\u044B\u0435 \u043E\u0446\u0435\u043D\u043A\u0438
       \u0438\u043C\u0435\u044E\u0442 \u0440\u0430\u0437\u043D\u044B\u0439 \u043A\u043E\u044D\u0444\u0444\u0438\u0446\u0438\u0435\u043D\u0442."
-    image: {fileID: 21300000, guid: be9391a1b4bfd7043beae9ba54f533dd, type: 3}
+    image: {fileID: 21300000, guid: 445f2d36d1b9b4f48be88e54a1cd58a4, type: 3}
     isUnlocked: 0
   - id: 19
     title: "\u041B\u041E\u0421\u044C"
@@ -1062,7 +1062,7 @@ MonoBehaviour:
       \u041B\u0438\u0446\u0435\u0439\u0441\u043A\u0438\u0435 \u043E\u043B\u0438\u043C\u043F\u0438\u0430\u0434\u043D\u044B\u0435
       \u0441\u0431\u043E\u0440\u044B\_\u041B\u0438\u0446\u0435\u044F \u041D\u0418\u0423
       \u0412\u0428\u042D.\_"
-    image: {fileID: 21300000, guid: be9391a1b4bfd7043beae9ba54f533dd, type: 3}
+    image: {fileID: 21300000, guid: 479b29b2c1615374199e1d6e2b3c7ca9, type: 3}
     isUnlocked: 0
 --- !u!4 &682268848
 Transform:

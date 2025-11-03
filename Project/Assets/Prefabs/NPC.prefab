@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8185404654509345108}
   - component: {fileID: 4801271633738756329}
   - component: {fileID: 7328470469839557019}
+  - component: {fileID: 2143864501568917143}
   m_Layer: 0
   m_Name: NPC
   m_TagString: Untagged
@@ -101,6 +102,7 @@ MonoBehaviour:
   dialogue: {fileID: 11400000, guid: aa7b5d1ab7880a84db43b0a37aee7e14, type: 2}
   interactionDistance: 2
   destroyAfterDialogue: 1
+  soundToPlay: {fileID: 0}
 --- !u!61 &7328470469839557019
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -146,3 +148,24 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.9977748, y: 2.49}
   m_EdgeRadius: 0
+--- !u!95 &2143864501568917143
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5284758294842049800}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 38ae59fa56b94a34ba6ce6c812e03cda, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

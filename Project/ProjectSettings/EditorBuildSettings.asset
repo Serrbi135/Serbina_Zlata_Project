@@ -9,36 +9,99 @@ EditorBuildSettings:
     path: Assets/Scenes/Registration.unity
     guid: 54dfc81e0c9dc4d42bed30d2b6676d23
   - enabled: 1
-    path: Assets/Scenes/Obuchenie.unity
+    path: Assets/Scenes/Sujets/Obuchenie.unity
     guid: 41282e7df18fe5545b11c90ad0eb15a4
   - enabled: 1
-    path: Assets/Scenes/Obuchenie 1.unity
+    path: Assets/Scenes/Levels/Obuchenie 1.unity
     guid: eca08f2cfafeab143ad53299682237b0
   - enabled: 1
     path: Assets/Scenes/LoadScene.unity
     guid: d6b632316c5fea14a8934e859fafa768
   - enabled: 1
-    path: Assets/Scenes/Sujet_1_A 2.unity
-    guid: faf0102b43f07ca41b0c7d895d6b13b0
-  - enabled: 1
-    path: Assets/Scenes/Sujet_1_A.unity
+    path: Assets/Scenes/Sujets/Sujet_1_A.unity
     guid: 799f66ac8bc5b354c86ae46f435fd0cd
   - enabled: 1
-    path: Assets/Scenes/Level 1.unity
+    path: Assets/Scenes/Sujets/Sujet_1_A 1.unity
+    guid: 3eef775d66482bf4997879470251c83e
+  - enabled: 1
+    path: Assets/Scenes/Sujets/Sujet_1_A 2.unity
+    guid: 9807ca03f2fbc024d9475f5163d8d052
+  - enabled: 1
+    path: Assets/Scenes/Sujets/Sujet_1_A 3.unity
+    guid: 6adc0470562d6ef4d8045e27809ea3a0
+  - enabled: 1
+    path: Assets/Scenes/Sujets/Sujet_1_A 4.unity
+    guid: 85fd1f344e5079847a75c19266afbbed
+  - enabled: 1
+    path: Assets/Scenes/ToNextDay.unity
+    guid: 097f92a45ab57ee45b8e41cb0e2a87ba
+  - enabled: 1
+    path: Assets/Scenes/Levels/1.unity
+    guid: 0c72202f4ffed4e4fa5b1583d247f3cb
+  - enabled: 1
+    path: Assets/Scenes/ToNextNight.unity
+    guid: 68d17a9979b34e64bb4b6e379aa7e150
+  - enabled: 1
+    path: Assets/Scenes/Sujets/Sujet_B.unity
+    guid: c82ea27d177b5fd4e8ec7aa25aa12f5c
+  - enabled: 1
+    path: Assets/Scenes/Sujets/Sujet_B 1.unity
+    guid: 29bd8e7d66b542e45908a1a00b752a65
+  - enabled: 1
+    path: Assets/Scenes/Sujets/Sujet_B 2.unity
+    guid: 83caae16810d2ee489fa371e00dcece8
+  - enabled: 1
+    path: Assets/Scenes/Levels/2.unity
+    guid: 5f60a30753dc92646a4de928f4fae088
+  - enabled: 1
+    path: Assets/Scenes/Sujets/Sujet_C 1.unity
+    guid: 029db65b6eeef264b99f6d7d527b88b9
+  - enabled: 1
+    path: Assets/Scenes/Sujets/Sujet_C 2.unity
+    guid: faf0102b43f07ca41b0c7d895d6b13b0
+  - enabled: 1
+    path: Assets/Scenes/Sujets/Sujet_C 3.unity
+    guid: 049a0ffe958bf6d418bd489603ed1727
+  - enabled: 1
+    path: Assets/Scenes/Levels/3.unity
+    guid: a652284a86dd54648912cafbe7fb4f52
+  - enabled: 1
+    path: Assets/Scenes/Sujets/Sujet_D.unity
+    guid: 9371576c6f3e30d4a92d89c7aa9a0c7b
+  - enabled: 1
+    path: Assets/Scenes/Levels/4.unity
+    guid: c4e0a4284dd3d3842847b369328ae501
+  - enabled: 1
+    path: Assets/Scenes/Sujets/Sujet_E.unity
+    guid: c6307fa482a8e5442af2b0eed12273ac
+  - enabled: 1
+    path: Assets/Scenes/Sujets/Sujet_E 2.unity
+    guid: d6909f981334ede4fa14efabb181cca5
+  - enabled: 1
+    path: Assets/Scenes/Levels/5.unity
     guid: f287e87e86e78164e957e5941430c69f
+  - enabled: 1
+    path: Assets/Scenes/Sujets/Sujet_F.unity
+    guid: f5aaa64a2d8683a4d91edb7db19e999f
+  - enabled: 1
+    path: Assets/Scenes/Levels/6.unity
+    guid: e62af68e707e8c2439bb83c1bee97702
+  - enabled: 1
+    path: Assets/Scenes/preFinal.unity
+    guid: 2362551cf75e7e54182df427767b497e
   - enabled: 1
     path: Assets/Scenes/Final.unity
     guid: 8100f7979d288694db0f6fe922e093f8
   - enabled: 1
-    path: Assets/Scenes/LoadLobby.unity
-    guid: 3c0073a8d1cac4a4ab702c734dfe71c2
-  - enabled: 1
-    path: Assets/Scenes/Diary.unity
-    guid: d247c6d8982164c4ab89ecf740cbf49d
+    path: Assets/Scenes/Titres.unity
+    guid: d01996c292b2f714ca5a1fc596ef7963
   - enabled: 1
     path: Assets/Scenes/Stats.unity
     guid: 0d4aac3f4b67dbf449a8e13b17c7e7d8
   - enabled: 1
-    path: Assets/Scenes/Titres.unity
-    guid: d01996c292b2f714ca5a1fc596ef7963
+    path: Assets/Scenes/Diary.unity
+    guid: d247c6d8982164c4ab89ecf740cbf49d
+  - enabled: 1
+    path: Assets/Scenes/LoadLobby.unity
+    guid: 3c0073a8d1cac4a4ab702c734dfe71c2
   m_configObjects: {}

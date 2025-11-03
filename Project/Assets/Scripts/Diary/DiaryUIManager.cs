@@ -54,6 +54,18 @@ public class DiaryUIManager : MonoBehaviour
         }
     }
 
+    public void RefreshDiaryWithFlags(int[] flags)
+    {
+        if (flags == null) return;
+
+        for (int i = 0; i < entries.Count && i < flags.Length; i++)
+        {
+            entries[i].isUnlocked = flags[i] == 1;
+        }
+
+        LoadDiaryEntries(); 
+    }
+
     public void ExitButton()
     {
         Loader.LoadScene("LoadScene");

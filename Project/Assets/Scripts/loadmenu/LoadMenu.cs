@@ -29,11 +29,6 @@ public class LoadMenu : MonoBehaviour
     [SerializeField] private MoralitySystem moralitySystem;
     [SerializeField] private DiaryManager diaryManager;
 
-
-    
-
-    
-
     private void Start()
     {
         currentUserId = PlayerPrefs.GetInt("CurrentUserId");
@@ -56,8 +51,6 @@ public class LoadMenu : MonoBehaviour
         CheckForSave();
     }
 
-
-
     public void CheckForSave()
     {
         int userId = PlayerPrefs.GetInt("CurrentUserId");
@@ -77,7 +70,6 @@ public class LoadMenu : MonoBehaviour
         }));
     }
 
-
     private void OpenDiary()
     {
         StartCoroutine(OpenDiaryRoutine());
@@ -92,7 +84,6 @@ public class LoadMenu : MonoBehaviour
     private void OpenStats()
     {
         Loader.LoadScene("Stats");
-
     }
 
     public void LoadGame()
@@ -103,7 +94,7 @@ public class LoadMenu : MonoBehaviour
             {
                 Debug.Log($"Загружаем игру");
                 Debug.Log($"{progress.moralityPoints}");
-                if(moralitySystem == null)
+                if (moralitySystem == null)
                 {
                     Debug.Log("uh");
                 }
@@ -111,8 +102,6 @@ public class LoadMenu : MonoBehaviour
                 {
                     moralitySystem.SetPoints(progress.moralityPoints);
                 }
-
-
 
                 if (diaryManager != null && progress.diaryFlags != null)
                 {
@@ -132,24 +121,55 @@ public class LoadMenu : MonoBehaviour
     {
         if (hasSave)
         {
-            StartCoroutine(apiManager.DeleteSave(currentUserId, () => {
-                LoadFirstLevel();
-                ResetLocalData();
-            }));
-
-            
+            StartCoroutine(DeleteSaveAndStartNewGame());
         }
         else
         {
-            LoadFirstLevel();
-            ResetLocalData();
+            StartCoroutine(CreateNewGame());
         }
     }
 
+    private IEnumerator DeleteSaveAndStartNewGame()
+    {
+        yield return StartCoroutine(apiManager.DeleteSave(currentUserId, () => {
+            Debug.Log("Старое сохранение удалено");
+        }));
+
+        yield return StartCoroutine(CreateNewGame());
+    }
+
+    private IEnumerator CreateNewGame()
+    {
+        ResetLocalData();
+
+        PlayerProgress initialProgress = new PlayerProgress
+        {
+            sceneIndex = SceneManager.GetSceneByName("Sujet_1_A").buildIndex,
+            moralityPoints = 0,
+            diaryFlags = new int[20],
+            playTime = 0f
+        };
+
+        bool saveSuccess = false;
+        yield return StartCoroutine(apiManager.SaveGame(currentUserId, initialProgress, (success) => {
+            saveSuccess = success;
+        }));
+
+        if (saveSuccess)
+        {
+            Debug.Log("Начальное сохранение создано успешно");
+            LoadFirstLevel();
+        }
+        else
+        {
+            Debug.LogError("Не удалось создать начальное сохранение");
+            LoadFirstLevel();
+        }
+    }
 
     private void ResetLocalData()
     {
-        flags = new int[20]; 
+        flags = new int[20];
         for (int i = 0; i < flags.Length; i++)
         {
             flags[i] = 0;
@@ -181,17 +201,13 @@ public class LoadMenu : MonoBehaviour
 
     public IEnumerator TextDisappear()
     {
-       yield return new WaitForSeconds(7);
-
+        yield return new WaitForSeconds(7);
         logoText.gameObject.SetActive(false);
-
-
     }
 
     private void LoadFirstLevel()
     {
-        Loader.LoadScene("Sujet_1_A"); 
-        //ПОМЕНЯТЬ
+        Loader.LoadScene("Sujet_1_A");
     }
 
     private void ToObuchenie()
@@ -203,6 +219,4 @@ public class LoadMenu : MonoBehaviour
     {
         Loader.LoadScene("Registration");
     }
-
-    
 }
