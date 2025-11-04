@@ -21,7 +21,20 @@ public class GameProgress : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            CurrentProgress = new PlayerProgress()
+            {
+                sceneIndex = 0,
+                moralityPoints = 50,
+                diaryFlags = new int[20],
+                playTime = 0f
+            };
         }
+        else
+        {
+            Destroy(gameObject);
+        }
+
+
     }
 
     public void SaveCurrentState()
@@ -33,4 +46,20 @@ public class GameProgress : MonoBehaviour
             diaryFlags = DiaryManager.Instance.GetFlags()
         };
     }
+
+
+    public void ApplyLoadedProgress(PlayerProgress progress)
+    {
+        if (progress != null)
+        {
+            CurrentProgress = progress;
+
+            PlayerPrefs.SetInt("LoadedMorality", progress.moralityPoints);
+            PlayerPrefs.SetString("LoadedDiaryFlags", string.Join(",", progress.diaryFlags));
+            PlayerPrefs.Save();
+
+            Debug.Log($"Прогресс применен: сцена {progress.sceneIndex}, мораль {progress.moralityPoints}");
+        }
+    }
+
 }

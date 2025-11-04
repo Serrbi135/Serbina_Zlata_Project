@@ -6,8 +6,13 @@ using UnityEngine;
 public class MoralitySystem : MonoBehaviour
 {
     public static MoralitySystem Instance;
-    public int Points { get; private set; }
+    private int points = 50;
 
+    public int Points
+    {
+        get => points;
+        private set => points = Mathf.Clamp(value, 0, 100);
+    }
 
     public event Action OnMoralityChanged;
 

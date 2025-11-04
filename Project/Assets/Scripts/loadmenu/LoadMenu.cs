@@ -92,27 +92,13 @@ public class LoadMenu : MonoBehaviour
         StartCoroutine(apiManager.LoadGame(userId, (progress) => {
             if (progress != null)
             {
-                Debug.Log($"Загружаем игру");
-                Debug.Log($"{progress.moralityPoints}");
-                if (moralitySystem == null)
-                {
-                    Debug.Log("uh");
-                }
-                else
-                {
-                    moralitySystem.SetPoints(progress.moralityPoints);
-                }
+                Debug.Log($"Загружаем игру: сцена {progress.sceneIndex}, мораль {progress.moralityPoints}");
 
-                if (diaryManager != null && progress.diaryFlags != null)
-                {
-                    diaryManager.SetFlags(progress.diaryFlags);
-                }
-
-                if (progress.sceneIndex >= 0 && progress.sceneIndex < SceneManager.sceneCountInBuildSettings)
-                {
-                    Debug.Log($"Загрузка сцены с индексом {progress.sceneIndex}");
-                    Loader.LoadScene(progress.sceneIndex);
-                }
+                Loader.LoadGame(progress);
+            }
+            else
+            {
+                Debug.LogError("Не удалось загрузить прогресс игры");
             }
         }));
     }
@@ -144,8 +130,8 @@ public class LoadMenu : MonoBehaviour
 
         PlayerProgress initialProgress = new PlayerProgress
         {
-            sceneIndex = SceneManager.GetSceneByName("Sujet_1_A").buildIndex,
-            moralityPoints = 0,
+            sceneIndex = 4,
+            moralityPoints = 50,
             diaryFlags = new int[20],
             playTime = 0f
         };
@@ -182,7 +168,7 @@ public class LoadMenu : MonoBehaviour
 
         if (MoralitySystem.Instance != null)
         {
-            MoralitySystem.Instance.SetPoints(0);
+            MoralitySystem.Instance.SetPoints(50);
         }
 
         SaveLoadManager saveManager = FindObjectOfType<SaveLoadManager>();
@@ -207,7 +193,7 @@ public class LoadMenu : MonoBehaviour
 
     private void LoadFirstLevel()
     {
-        Loader.LoadScene("Sujet_1_A");
+        Loader.LoadScene(4);
     }
 
     private void ToObuchenie()

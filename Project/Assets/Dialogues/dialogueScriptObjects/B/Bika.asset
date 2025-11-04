@@ -57,9 +57,9 @@ MonoBehaviour:
     isChoice: 1
     choices:
     - text: "\u041F\u043E\u0443\u0447\u0430\u0441\u0442\u0432\u043E\u0432\u0430\u043B\u0430!"
-      moralityEffect: 15
+      moralityEffect: -15
     - text: "\u041B\u0443\u0447\u0448\u0435 \u0434\u043E\u043C\u0430 \u043F\u043E\u0441\u0438\u0434\u0435\u043B\u0430"
-      moralityEffect: -5
+      moralityEffect: 10
     characterImage: {fileID: 0}
     characterName: "\u0417\u0430\u0440\u044F"
   - text: "\u0410 \u0447\u0442\u043E \u0442\u0430\u043A\u043E\u0435 2359?"

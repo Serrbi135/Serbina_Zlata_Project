@@ -69,8 +69,20 @@ public class GameStatsDisplay : MonoBehaviour
         {
             case 0: return "Регистрация";
             case 1: return "Меню загрузки";
-            case 2: return "Понедельник";
-            case 3: return "Сон понедельника";
+            case 4 or 5 or 6 or 7 or 8: return "Понедельник";
+            case 10: return "Сон понедельника";
+            case 12 or 13 or 14: return "Вторник";
+            case 16: return "Ночь вторника";
+            case 18 or 19 or 20: return "Среда";
+            case 22: return "Ночь среды";
+            case 24: return "Четверг";
+            case 26: return "Ночь четверга";
+            case 28 or 29: return "Пятница";
+            case 31: return "Ночь пятницы";
+            case 33: return "Суббота";
+            case 35: return "Ночь субботы";
+            case 37 or 28: return "Финал";
+            case -1: return "Сохранения нет";
             default: return $"Сцена {sceneIndex}";
         }
     }

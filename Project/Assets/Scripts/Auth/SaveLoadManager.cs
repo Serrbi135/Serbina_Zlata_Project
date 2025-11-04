@@ -29,8 +29,13 @@ public class SaveLoadManager : MonoBehaviour
     private void Start()
     {
         apiManager = FindObjectOfType<GameAPIManager>();
-        currentUserId = PlayerPrefs.GetInt("CurrentUserId");
         currentPanel = Instantiate(saveLoadPanelPrefab);
+        //currentUserId = PlayerPrefs.GetInt("CurrentUserId");
+
+        if (GameProgress.Instance.CurrentProgress == null)
+        {
+            GameProgress.Instance.CurrentProgress = new PlayerProgress();
+        }
 
         currentPanel.transform.SetParent(transform, false);
         Canvas canvas = currentPanel.GetComponent<Canvas>();
@@ -158,6 +163,7 @@ public class SaveLoadManager : MonoBehaviour
 
     private IEnumerator LoadDiaryAndOpen()
     {
+        int currentUserId = PlayerPrefs.GetInt("CurrentUserId");
         yield return StartCoroutine(apiManager.LoadAndApplyDiaryFlags(currentUserId));
 
         diaryUIGame.interactable = true;
@@ -175,7 +181,22 @@ public class SaveLoadManager : MonoBehaviour
 
     public void SaveGame()
     {
-        PlayerProgress progress = GetCurrentProgress();
+        int currentUserId = PlayerPrefs.GetInt("CurrentUserId");
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        int moralityPoints = MoralitySystem.Instance != null ? MoralitySystem.Instance.Points : 0;
+        int[] diaryFlags = DiaryManager.Instance != null ? DiaryManager.Instance.GetFlags() : new int[20];
+        float totalPlayTime = GetTotalPlayTime();
+
+        PlayerProgress progress = new PlayerProgress
+        {
+            sceneIndex = currentSceneIndex,
+            moralityPoints = moralityPoints,
+            diaryFlags = diaryFlags,
+            playTime = totalPlayTime
+        };
+
+        Debug.Log($"Сохранение для пользователя {currentUserId}:сцена {currentSceneIndex}, мораль {moralityPoints}, время {totalPlayTime}");
+
         savePopup.alpha = 1;
         StartCoroutine(apiManager.SaveGame(
             currentUserId,
@@ -183,8 +204,8 @@ public class SaveLoadManager : MonoBehaviour
             (success) => {
                 if (success)
                 {
-                    Debug.Log("Game saved successfully!");
-                    apiManager.SetTotalPlayTime(GetTotalPlayTime());
+                    Debug.Log("Игра успешно сохранена!");
+                    apiManager.SetTotalPlayTime(totalPlayTime);
                     currentSessionTime = 0f;
 
                     isGameSaved = true;
@@ -192,8 +213,7 @@ public class SaveLoadManager : MonoBehaviour
                 }
                 else
                 {
-                    
-                    Debug.LogError("Save failed");
+                    Debug.LogError("Ошибка сохранения");
                 }
             }
         ));

@@ -65,6 +65,7 @@
     <Compile Include="Assets\Scripts\LoadLobby\Loader.cs" />
     <Compile Include="Assets\Scripts\Platformer\Enemies\RunningEnemy.cs" />
     <Compile Include="Assets\Scripts\Auth\GameAPIManager.cs" />
+    <Compile Include="Assets\Scripts\LoadLobby\SceneInitializer.cs" />
     <Compile Include="Assets\Scripts\Morality\MoralityUI.cs" />
     <Compile Include="Assets\Dialogues\DialogueSystem.cs" />
     <Compile Include="Assets\Scripts\Diary\DiarySystem.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="Assets\Scripts\Diary\DiaryEntryButton.cs" />
     <Compile Include="Assets\Scripts\Platformer\Enemies\Tentacle.cs" />
     <Compile Include="Assets\Scripts\Platformer\Scene\Obuchenie1Menu.cs" />
+    <Compile Include="Assets\Scripts\UI\GameExitManager.cs" />
     <Compile Include="Assets\Scripts\Stats\GameStatsDisplay.cs" />
     <Compile Include="Assets\Scripts\UI\FadeToBlack.cs" />
     <Compile Include="Assets\Dialogues\Dialogue.cs" />
@@ -110,7 +112,6 @@
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
     <None Include="Assets\Fonts\Rubik\OFL.txt" />
-    <None Include="Assets\Fonts\Comfortaa cyrillic\OFL.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
@@ -121,7 +122,6 @@
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
-    <None Include="Assets\Fonts\Comfortaa cyrillic\README.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />

@@ -17,4 +17,9 @@ MonoBehaviour:
   isOpeningFlag: 0
   destroyAfter: 0
   IndexFlag: 0
-  lines: []
+  lines:
+  - text: "\u041F\u0443\u043F\u0443\u043F\u0443..."
+    isChoice: 0
+    choices: []
+    characterImage: {fileID: 0}
+    characterName: 

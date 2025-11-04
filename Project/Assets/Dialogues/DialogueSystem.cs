@@ -172,8 +172,8 @@ public class DialogueSystem : MonoBehaviour
         TMP_Text effectText = effect.GetComponent<TMP_Text>();
         CanvasGroup canvasGroup = effect.GetComponent<CanvasGroup>();
         canvasGroup.DOFade(1, 1f);
-        effectText.text = (amount > 0 ? "общение +" : "учёба +") + Mathf.Abs(amount);
-        effectText.color = amount > 0 ? Color.blue : Color.red;
+        effectText.text = (amount < 0 ? "общение +" : "учёба +") + Mathf.Abs(amount);
+        effectText.color = amount < 0 ? Color.blue : Color.red;
 
         Destroy(effect, 2f);
     }

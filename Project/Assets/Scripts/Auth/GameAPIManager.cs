@@ -72,7 +72,6 @@ public class GameAPIManager : MonoBehaviour
         totalPlayTime = time;
     }
 
-    // Метод для получения общего времени
     public float GetTotalPlayTime()
     {
         return totalPlayTime;
@@ -89,25 +88,21 @@ public class GameAPIManager : MonoBehaviour
 
         yield return request.SendWebRequest();
 
-
         if (request.result == UnityWebRequest.Result.Success)
         {
             var response = JsonUtility.FromJson<LoginResponse>(request.downloadHandler.text);
-            if (response.status == "success" && response.user_id > 0) 
+            if (response.status == "success" && response.user_id > 0)
             {
-                PlayerPrefs.SetInt("CurrentUserId", response.user_id); 
+                PlayerPrefs.SetInt("CurrentUserId", response.user_id);
                 PlayerPrefs.Save();
-                onSuccess?.Invoke(response.user_id);
+
                 yield return LoadTotalPlayTime(response.user_id);
+                onSuccess?.Invoke(response.user_id);
             }
             else
             {
                 uiManager.ShowError("Неправильный ID");
             }
-        }
-        else
-        {
-            uiManager.ShowError($"Войти не удалось: {request.error}");
         }
     }
 
@@ -172,12 +167,21 @@ public class GameAPIManager : MonoBehaviour
 
     public IEnumerator SaveGame(int userId, PlayerProgress progress, System.Action<bool> callback)
     {
+        //int currentUserId = PlayerPrefs.GetInt("CurrentUserId");
+        int currentUserIdFromPrefs = PlayerPrefs.GetInt("CurrentUserId");
+        if (userId != currentUserIdFromPrefs)
+        {
+            Debug.LogWarning($"ID пользователя не совпадает: передан {userId}, ожидается {currentUserIdFromPrefs}");
+        }
+
         if (progress == null)
         {
             Debug.LogError("Progress is null!");
             callback?.Invoke(false);
             yield break;
         }
+
+        Debug.Log($"Отправка сохранения: user_id={userId}, scene={progress.sceneIndex}, morality={progress.moralityPoints}, time={progress.playTime}");
 
         var saveData = new SaveRequest
         {
@@ -191,7 +195,7 @@ public class GameAPIManager : MonoBehaviour
 
         string json = JsonUtility.ToJson(saveData);
         Debug.Log("Sending JSON: " + json);
-
+        Debug.Log($"Attempting to save for user_id: {userId}");
 
         using (var request = new UnityWebRequest(baseUrl + "/save", "POST"))
         {
