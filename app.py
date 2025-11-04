@@ -2,6 +2,8 @@ from flask import Flask, request, jsonify, make_response
 from flask_mysqldb import MySQL
 from flask_bcrypt import Bcrypt
 import json
+
+import time
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
@@ -12,7 +14,7 @@ CORS(app)
 
 bcrypt = Bcrypt(app)
 
-app.config['MYSQL_HOST'] = ''
+app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = ''
 app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = ''
@@ -70,15 +72,19 @@ def login():
 def save_game():
     try:
         data = request.get_json()
+        data = request.get_json()
+        user_id = data['user_id']
         
-        required = ['user_id', 'scene_index', 'morality', 'diary_flags']
+        
+        required = ['user_id', 'scene_index', 'morality', 'diary_flags', 'play_time']
         if not all(field in data for field in required):
             return jsonify({"status": "error", "message": "Missing required fields"}), 400
 
         save_data = {
             "scene_index": data['scene_index'],
             "morality": data['morality'],
-            "diary_flags": data['diary_flags']
+            "diary_flags": data['diary_flags'],
+            "play_time": data['play_time']
         }
 
         cur = mysql.connection.cursor()
@@ -114,7 +120,8 @@ def load_game():
                 "status": "success",
                 "scene_index": save_data["scene_index"],
                 "morality": save_data["morality"],
-                "diary_flags": save_data["diary_flags"]
+                "diary_flags": save_data["diary_flags"],
+                "play_time": save_data["play_time"]
             })
         else:
             return jsonify({"status": "error", "message": "No save found"}), 404
@@ -126,14 +133,70 @@ def load_game():
             cur.close()
 
 
+@app.route('/delete_save', methods=['POST'])
+def delete_save():
+    try:
+        data = request.get_json()
+        user_id = data['user_id']
+        
+        cur = mysql.connection.cursor()
+        cur.execute("DELETE FROM game_saves WHERE user_id = %s", (user_id,))
+        mysql.connection.commit()
+        
+        if cur.rowcount > 0:
+            return jsonify({"status": "success", "message": "Save deleted successfully"})
+        else:
+            return jsonify({"status": "error", "message": "No save found to delete"}), 404
+
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
+    finally:
+        if 'cur' in locals():
+            cur.close()
+
+@app.route('/save_info', methods=['POST'])
+def save_info():
+    try:
+        user_id = request.get_json()['user_id']
+        
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT save_data FROM game_saves WHERE user_id = %s", (user_id,))
+        result = cur.fetchone()
+        
+        if result:
+            save_data = json.loads(result[0])
+            return jsonify({
+                "info": {
+                    "sceneIndex": save_data["scene_index"]
+                }
+            })
+        else:
+            return jsonify({"info": None})
+
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
+    finally:
+        if 'cur' in locals():
+            cur.close()
+
+@app.route('/check_save', methods=['POST'])
+def check_save():
+    try:
+        user_id = request.get_json()['user_id']
+        
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT 1 FROM game_saves WHERE user_id = %s", (user_id,))
+        result = cur.fetchone()
+        
+        return jsonify({"exists": result is not None})
+
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
+    finally:
+        if 'cur' in locals():
+            cur.close()
 
 
-
-
-@app.before_request
-def log_request():
-    app.logger.debug(f"Request Headers: {request.headers}")
-    app.logger.debug(f"Request Data: {request.get_data()}")
 
 
 
