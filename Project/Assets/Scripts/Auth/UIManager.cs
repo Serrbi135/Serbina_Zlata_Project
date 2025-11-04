@@ -38,7 +38,6 @@ public class UIManager : MonoBehaviour
         backToLoginButton.onClick.AddListener(ShowLoginPanel);
         loginButton.onClick.AddListener(OnLoginButtonClicked);
         registerButton.onClick.AddListener(OnRegisterButtonClicked);
-        //newGameButton.onClick.AddListener(OnNewGameButtonClicked);
 
         apiManager = gameObject.AddComponent<GameAPIManager>();
     }
@@ -110,21 +109,6 @@ public class UIManager : MonoBehaviour
         ShowLoginPanel();
     }
 
-    /*private void OnNewGameButtonClicked()
-    {
-        Loader.LoadScene("Sujet_1_A");
-
-        PlayerPrefs.DeleteKey("CurrentProgress");
-        if (GameProgress.Instance != null)
-        {
-            GameProgress.Instance.CurrentProgress = new PlayerProgress()
-            {
-                sceneIndex = 2, 
-                moralityPoints = 0,
-                diaryFlags = new int[20] 
-            };
-        }
-    }*/
 
     public void ShowError(string message)
     {

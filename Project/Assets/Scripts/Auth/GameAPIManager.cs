@@ -104,6 +104,10 @@ public class GameAPIManager : MonoBehaviour
                 uiManager.ShowError("Неправильный ID");
             }
         }
+        else
+        {
+            uiManager.ShowError($"Войти не удалось: {request.error}");
+        }
     }
 
 
